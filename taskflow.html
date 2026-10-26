@@ -1,0 +1,559 @@
+<!doctype html>
+<html lang="en" data-bs-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TaskFlow</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+<style>
+/* ============================================================
+   1. THEME — Bootstrap variables + original palette (unchanged)
+   ============================================================ */
+:root{
+  --p:#6c4fd0;
+  --bg:#f2effb;
+  --c:#fff;
+  --y:#e8b93d;
+  --g:#4cb782;
+  --r:#de5f9b;
+  --bs-body-font-family:Poppins,sans-serif;
+
+  /* ──────────────────────────────────────────────────────────
+     GLASSMORPHISM SYSTEM — edit these to tweak the glass look
+     ────────────────────────────────────────────────────────── */
+  --glass-bg:       rgba(255,255,255,0.12);
+  --glass-bg-hover: rgba(255,255,255,0.18);
+  --glass-border:   rgba(255,255,255,0.25);
+  --glass-border-h: rgba(255,255,255,0.4);
+  --glass-blur:     blur(20px);
+  --glass-radius:   24px;
+  --glass-shadow:   0 8px 32px rgba(108,79,208,0.15);
+  --glass-shadow-h: 0 12px 40px rgba(108,79,208,0.25);
+}
+
+/* Dark mode: deeper glass */
+[data-bs-theme=dark]{
+  --bg:#0a0618;--c:#221e3d;
+  --glass-bg:       rgba(15,10,40,0.45);
+  --glass-bg-hover: rgba(20,15,50,0.55);
+  --glass-border:   rgba(255,255,255,0.1);
+  --glass-border-h: rgba(255,255,255,0.18);
+  --glass-shadow:   0 8px 32px rgba(0,0,0,0.3);
+  --glass-shadow-h: 0 12px 40px rgba(0,0,0,0.4);
+}
+
+/* ============================================================
+   2. BACKGROUND — gradient + floating orbs
+   ============================================================ */
+body{
+  background:linear-gradient(135deg,#210635 0%,#420D4B 22%,#7B337E 45%,#6667AB 72%,#F5D5E0 100%);
+  background-attachment:fixed;
+  min-height:100vh;
+  overflow-x:hidden;
+  color:rgba(255,255,255,0.88);
+}
+[data-bs-theme=dark] body{
+  background:linear-gradient(135deg,#080415 0%,#150a2e 25%,#251545 50%,#1e1855 75%,#0d0820 100%);
+}
+
+/* Floating gradient orbs — gives glass something to blur over */
+.orbs{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:0}
+.orbs::before,.orbs::after,.orbs .orb-3{
+  content:'';position:absolute;border-radius:50%;
+  filter:blur(80px);opacity:.45;
+  animation:orbFloat 20s ease-in-out infinite alternate;
+}
+.orbs::before{
+  width:500px;height:500px;
+  background:radial-gradient(circle,#6667AB,transparent 70%);
+  top:-10%;left:-5%;
+}
+.orbs::after{
+  width:420px;height:420px;
+  background:radial-gradient(circle,#de5f9b,transparent 70%);
+  bottom:5%;right:-8%;
+  animation-delay:-7s;animation-duration:25s;
+}
+.orbs .orb-3{
+  width:360px;height:360px;
+  background:radial-gradient(circle,#7B337E,transparent 70%);
+  top:40%;left:48%;
+  animation-delay:-14s;animation-duration:22s;
+}
+@keyframes orbFloat{
+  0%  {transform:translate(0,0) scale(1)}
+  33% {transform:translate(40px,-30px) scale(1.08)}
+  66% {transform:translate(-25px,40px) scale(.95)}
+  100%{transform:translate(30px,20px) scale(1.05)}
+}
+[data-bs-theme=dark] .orbs::before,
+[data-bs-theme=dark] .orbs::after,
+[data-bs-theme=dark] .orbs .orb-3{opacity:.25}
+
+/* ============================================================
+   3. GLASS UTILITY CLASS
+   ============================================================ */
+.glass{
+  background:var(--glass-bg);
+  backdrop-filter:var(--glass-blur);
+  -webkit-backdrop-filter:var(--glass-blur);
+  border:1px solid var(--glass-border);
+  border-radius:var(--glass-radius);
+  box-shadow:var(--glass-shadow);
+  transition:all .25s ease;
+}
+.glass-hover:hover{
+  background:var(--glass-bg-hover);
+  border-color:var(--glass-border-h);
+  box-shadow:var(--glass-shadow-h);
+  transform:translateY(-2px);
+}
+/* Fallback when backdrop-filter is unsupported */
+@supports not (backdrop-filter:blur(1px)){
+  .glass,.card{background:rgba(40,25,80,0.85)!important}
+}
+
+/* ============================================================
+   4. APP FRAME — the big floating glass container
+   ============================================================ */
+.app-frame{
+  position:relative;z-index:1;
+  margin:1rem;
+  background:rgba(255,255,255,0.05);
+  backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px);
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:28px;
+  min-height:calc(100vh - 2rem);
+}
+
+/* ============================================================
+   5. SIDEBAR
+   ============================================================ */
+.sw{width:250px;flex:none;position:sticky;top:0;align-self:flex-start;height:calc(100vh - 2rem)}
+@media(max-width:991px){.sw{width:0}}
+.offcanvas-lg .offcanvas-body{padding:0}
+.sidebar-inner{height:100%;display:flex;flex-direction:column}
+#nav .nav-link{
+  display:flex;gap:.7rem;align-items:center;
+  padding:.65rem 1rem;border-radius:50rem;
+  color:rgba(255,255,255,0.65);
+  cursor:pointer;font-weight:500;
+  transition:all .25s ease;
+}
+#nav .nav-link:hover{background:rgba(255,255,255,0.08);color:#fff}
+#nav .nav-link.active{
+  background:rgba(255,255,255,0.18);
+  color:#fff;
+  box-shadow:0 4px 15px rgba(108,79,208,0.25);
+  border:1px solid rgba(255,255,255,0.2);
+}
+.sidebar-motto{
+  background:rgba(255,255,255,0.07);
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:16px;
+  color:rgba(255,255,255,0.6);
+}
+
+/* ============================================================
+   6. CARDS — restyle Bootstrap .card to glass
+   ============================================================ */
+.card{
+  --bs-card-bg:transparent;
+  background:var(--glass-bg);
+  backdrop-filter:var(--glass-blur);
+  -webkit-backdrop-filter:var(--glass-blur);
+  border:1px solid var(--glass-border);
+  border-radius:var(--glass-radius);
+  box-shadow:var(--glass-shadow);
+  color:rgba(255,255,255,0.88);
+  transition:all .25s ease;
+}
+
+/* ============================================================
+   7. BUTTONS
+   ============================================================ */
+.btn{transition:all .25s ease}
+.btn-primary{
+  --bs-btn-bg:var(--p);--bs-btn-border-color:rgba(255,255,255,0.2);
+  --bs-btn-hover-bg:#5a3fb8;--bs-btn-hover-border-color:rgba(255,255,255,0.3);
+  --bs-btn-active-bg:#5a3fb8;--bs-btn-active-border-color:rgba(255,255,255,0.3);
+  border-radius:50rem;
+  box-shadow:0 4px 15px rgba(108,79,208,0.3);
+}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(108,79,208,0.4)}
+.btn-outline-primary{
+  --bs-btn-color:rgba(255,255,255,0.8);
+  --bs-btn-border-color:rgba(255,255,255,0.2);
+  --bs-btn-hover-bg:var(--p);--bs-btn-hover-border-color:var(--p);
+  --bs-btn-hover-color:#fff;
+  --bs-btn-active-bg:var(--p);--bs-btn-active-border-color:var(--p);
+  border-radius:50rem;
+}
+.btn-light{
+  --bs-btn-bg:rgba(255,255,255,0.08);
+  --bs-btn-border-color:rgba(255,255,255,0.12);
+  --bs-btn-hover-bg:rgba(255,255,255,0.16);
+  --bs-btn-hover-border-color:rgba(255,255,255,0.22);
+  --bs-btn-color:rgba(255,255,255,0.85);
+  --bs-btn-hover-color:#fff;
+  border-radius:50rem;
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+}
+.btn-close{filter:invert(1) grayscale(100%) brightness(200%)}
+.btn-group{border-radius:50rem;overflow:hidden}
+.btn-group .btn{border-radius:0}
+.btn-group .btn:first-child{border-radius:50rem 0 0 50rem}
+.btn-group .btn:last-child{border-radius:0 50rem 50rem 0}
+
+/* ============================================================
+   8. FORM CONTROLS
+   ============================================================ */
+.form-control,.form-select{
+  background:rgba(255,255,255,0.07);
+  border:1px solid rgba(255,255,255,0.15);
+  color:rgba(255,255,255,0.9);
+  border-radius:14px;
+  transition:all .25s ease;
+}
+.form-control:focus,.form-select:focus{
+  background:rgba(255,255,255,0.12);
+  border-color:rgba(108,79,208,0.5);
+  color:#fff;
+  box-shadow:0 0 0 3px rgba(108,79,208,0.15);
+}
+.form-control::placeholder{color:rgba(255,255,255,0.35)}
+.form-floating>.form-control~label,
+.form-floating>.form-select~label{color:rgba(255,255,255,0.5)}
+.input-group-text{
+  background:rgba(255,255,255,0.07);
+  border:1px solid rgba(255,255,255,0.15);
+  color:rgba(255,255,255,0.5);
+}
+.search-glass{
+  background:rgba(255,255,255,0.07);
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:50rem!important;overflow:hidden;
+}
+.search-glass .input-group-text{background:transparent;border:0;color:rgba(255,255,255,0.45)}
+.search-glass .form-control{background:transparent;border:0;color:#fff}
+.search-glass .form-control::placeholder{color:rgba(255,255,255,0.3)}
+
+/* ============================================================
+   9. TYPOGRAPHY & BADGES — readable on glass
+   ============================================================ */
+.text-primary{color:var(--p)!important}
+.text-secondary{color:rgba(255,255,255,0.5)!important}
+.text-body{color:rgba(255,255,255,0.85)!important}
+.text-danger{color:#f87171!important}
+.text-success{color:#6ee7b7!important}
+.text-warning{color:#fbbf24!important}
+.badge{font-weight:500;border-radius:50rem}
+.bg-primary-subtle{background:rgba(108,79,208,0.2)!important;color:#c4b5fd!important}
+.text-primary-emphasis{color:#c4b5fd!important}
+.bg-danger-subtle{background:rgba(222,95,155,0.2)!important}
+.text-danger-emphasis{color:#fca5c3!important}
+.bg-warning-subtle{background:rgba(232,185,61,0.2)!important}
+.text-warning-emphasis{color:#fde68a!important}
+.bg-info-subtle{background:rgba(74,144,226,0.2)!important}
+.text-info-emphasis{color:#93c5fd!important}
+.bg-success-subtle{background:rgba(76,183,130,0.2)!important}
+.text-success-emphasis{color:#6ee7b7!important}
+.bg-secondary-subtle{background:rgba(255,255,255,0.08)!important}
+.text-secondary-emphasis{color:rgba(255,255,255,0.65)!important}
+h1,h2,h3,h4,h5,h6,.fs-1,.fs-2,.fs-3,.fs-4,.fs-5{color:#fff}
+.fw-bold,.fw-semibold{color:rgba(255,255,255,0.95)}
+small{font-weight:500}
+.border-bottom{border-color:rgba(255,255,255,0.1)!important}
+.border-top{border-color:rgba(255,255,255,0.1)!important}
+
+/* ============================================================
+   10. COMPONENTS — preserved from original, glass-adapted
+   ============================================================ */
+.av{width:34px;height:34px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;color:#fff;font-size:.7rem;font-weight:600;border:2px solid rgba(255,255,255,0.3);vertical-align:middle}
+.av+.av{margin-left:-9px}
+.donut{border-radius:50%;display:grid;place-items:center;margin:auto}
+.donut>div{width:76%;height:76%;border-radius:50%;background:rgba(255,255,255,0.07);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1;text-align:center}
+.dot{width:22px;height:22px;border-radius:50%;background:rgba(255,255,255,0.08);transition:all .2s}.dot.on{background:var(--p);box-shadow:0 0 8px rgba(108,79,208,0.4)}
+.col-k{background:rgba(255,255,255,0.05);border-radius:20px;min-height:260px;border:1px solid rgba(255,255,255,0.08)}
+.tk{cursor:grab;transition:all .25s ease}.tk:hover{transform:translateY(-3px);box-shadow:var(--glass-shadow-h)}
+.bar{border-radius:50rem;padding:.2rem .8rem;margin:4px 0;cursor:pointer;white-space:nowrap;overflow:hidden;font-size:.8rem}
+.today{position:absolute;top:0;bottom:0;border-left:2px dashed rgba(167,139,250,0.6);pointer-events:none}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.cell{min-height:70px;border-radius:14px;padding:.4rem;cursor:pointer;border:2px solid transparent;transition:all .2s}
+.cell:hover{background:rgba(255,255,255,0.06)}
+.cell.sel{border-color:rgba(167,139,250,0.5);background:rgba(108,79,208,0.12)}
+.tdy{background:var(--p);color:#fff;border-radius:50%;padding:0 .4rem}
+.pd{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:2px}
+
+/* ============================================================
+   11. PROGRESS BARS
+   ============================================================ */
+.progress{background:rgba(255,255,255,0.08);border-radius:50rem;overflow:hidden}
+.progress-bar{border-radius:50rem}
+
+/* ============================================================
+   12. MODALS & OFFCANVAS — glass
+   ============================================================ */
+.modal-content{
+  background:rgba(30,20,60,0.8)!important;
+  backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+  border:1px solid var(--glass-border);
+  color:rgba(255,255,255,0.9);
+}
+.offcanvas{
+  background:rgba(30,20,60,0.85)!important;
+  backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+  border-color:var(--glass-border)!important;
+  color:rgba(255,255,255,0.9);
+}
+
+/* ============================================================
+   13. DROPDOWNS & TOASTS
+   ============================================================ */
+.dropdown-menu{
+  background:rgba(30,20,60,0.88);
+  backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur);
+  border:1px solid var(--glass-border);
+  border-radius:16px;
+  color:rgba(255,255,255,0.85);
+}
+.dropdown-item,.dropdown-item-text{color:rgba(255,255,255,0.78)}
+.dropdown-item:hover,.dropdown-item:focus{background:rgba(255,255,255,0.1);color:#fff}
+.toast{
+  background:rgba(108,79,208,0.9)!important;
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  border:1px solid rgba(255,255,255,0.2);
+  border-radius:16px!important;
+}
+
+/* ============================================================
+   14. ALERTS
+   ============================================================ */
+.alert{backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-radius:20px}
+.alert-success{background:rgba(76,183,130,0.12)!important;border-color:rgba(76,183,130,0.25)!important;color:#6ee7b7!important}
+.alert-danger{background:rgba(222,95,155,0.12)!important;border-color:rgba(222,95,155,0.25)!important;color:#fca5c3!important}
+
+/* ============================================================
+   15. CUSTOM SCROLLBAR
+   ============================================================ */
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.12);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:rgba(255,255,255,0.22)}
+
+/* ============================================================
+   16. DASHBOARD — stat card + quote card
+   ============================================================ */
+.stat-card{position:relative;overflow:hidden}
+.stat-card .stat-icon{
+  width:48px;height:48px;border-radius:16px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.3rem;
+  background:rgba(255,255,255,0.08);
+}
+.stat-card .stat-glow{
+  position:absolute;width:90px;height:90px;border-radius:50%;
+  filter:blur(40px);opacity:.25;top:-15px;right:-15px;
+}
+.quote-card{position:relative;overflow:hidden}
+.quote-card .quote-icon{font-size:3rem;opacity:.1;position:absolute;top:8px;left:14px}
+
+/* ============================================================
+   17. RESPONSIVE
+   ============================================================ */
+@media(max-width:991px){
+  .app-frame{margin:.5rem;border-radius:20px;min-height:calc(100vh - 1rem)}
+  .orbs::before{width:260px;height:260px}
+  .orbs::after{width:220px;height:220px}
+  .orbs .orb-3{width:180px;height:180px}
+  .offcanvas-start{
+    background:rgba(25,12,55,0.92)!important;
+    backdrop-filter:blur(24px)!important;-webkit-backdrop-filter:blur(24px)!important;
+  }
+}
+@media(max-width:575px){
+  .app-frame{margin:.25rem;border-radius:16px}
+  .card{border-radius:18px}
+}
+</style>
+</head>
+<body>
+<!-- Floating gradient orbs (glass has something colorful to blur) -->
+<div class="orbs"><div class="orb-3"></div></div>
+
+<div class="app-frame d-lg-flex gap-3 p-lg-3">
+ <!-- SIDEBAR (Bootstrap offcanvas-lg: static on desktop, hamburger drawer on phone) -->
+ <div class="sw"><div class="offcanvas-lg offcanvas-start" id="side" tabindex="-1"><div class="offcanvas-body"><div class="card p-3 w-100 sidebar-inner">
+  <div class="d-flex align-items-center gap-2 mb-3"><span class="av rounded-4" style="background:var(--p);width:42px;height:42px;font-size:1.2rem"><i class="bi bi-water"></i></span><b class="fs-5" style="color:#fff">TaskFlow</b><button class="btn-close ms-auto d-lg-none" data-bs-dismiss="offcanvas" data-bs-target="#side" aria-label="Close menu"></button></div>
+  <nav class="vstack gap-1" id="nav"></nav>
+  <div class="sidebar-motto rounded-4 p-3 mt-auto small">Plan it. Track it. <b>Finish it.</b></div>
+ </div></div></div></div>
+ <main class="flex-grow-1 p-3 p-lg-0" style="min-width:0">
+  <!-- TOP BAR -->
+  <div class="d-flex gap-2 align-items-center mb-3">
+   <button class="btn btn-light d-lg-none" data-bs-toggle="offcanvas" data-bs-target="#side" aria-label="Open menu"><i class="bi bi-list"></i></button>
+   <div class="search-glass input-group" style="max-width:380px"><span class="input-group-text border-0"><i class="bi bi-search"></i></span><input id="q" class="form-control border-0 shadow-none" placeholder="Search tasks…" aria-label="Search tasks"></div>
+   <div class="ms-auto d-flex gap-2 align-items-center">
+    <button id="dk" class="btn btn-light" aria-label="Toggle dark mode"><i class="bi bi-moon"></i></button>
+    <span id="stk" class="badge rounded-pill py-2 px-3" style="background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.85)" title="Current streak"></span>
+    <div class="dropdown d-none d-sm-block"><button class="btn btn-light" data-bs-toggle="dropdown" aria-label="Notifications"><i class="bi bi-bell"></i></button><ul class="dropdown-menu dropdown-menu-end" id="nf"></ul></div>
+    <button class="btn btn-primary" onclick="openM()"><i class="bi bi-plus-lg"></i><span class="d-none d-sm-inline"> Add New Task</span></button>
+    <span class="av" style="background:#e0485f;width:40px;height:40px" title="Fabiola">FM</span>
+   </div>
+  </div>
+  <div id="main"></div>
+ </main>
+</div>
+
+<!-- ADD / EDIT TASK (Bootstrap modal) -->
+<div class="modal fade" id="mo" tabindex="-1"><div class="modal-dialog modal-dialog-centered"><form class="modal-content rounded-4" onsubmit="sv(event)">
+ <div class="modal-header border-0"><h5 class="modal-title fw-bold" id="mt">Add New Task</h5><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
+ <div class="modal-body vstack gap-3"><input type="hidden" id="mi">
+  <div class="form-floating"><input id="f1" class="form-control" required placeholder="Title"><label for="f1">Title</label></div>
+  <div class="form-floating"><textarea id="f2" class="form-control" style="height:80px" placeholder="Description"></textarea><label for="f2">Description</label></div>
+  <div class="row g-2"><div class="col"><label class="small" for="f3">Priority</label><select id="f3" class="form-select"><option>Low<option selected>Medium<option>High</select></div><div class="col"><label class="small" for="f4">Status</label><select id="f4" class="form-select"><option value="open">Open<option value="prog">In Progress<option value="done">Done</select></div></div>
+  <div class="row g-2"><div class="col"><label class="small" for="f5">Start date</label><input type="date" id="f5" class="form-control"></div><div class="col"><label class="small" for="f6">Due date</label><input type="date" id="f6" class="form-control" required></div></div>
+  <div><div class="small mb-1">Assignees</div><div id="f7" class="d-flex flex-wrap gap-2"></div></div>
+ </div>
+ <div class="modal-footer border-0"><button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button><button class="btn btn-primary">Save task</button></div>
+</form></div></div>
+
+<!-- TASK DETAILS (Bootstrap offcanvas) -->
+<div class="offcanvas offcanvas-end" id="dt" tabindex="-1"><div class="offcanvas-header"><h5 class="fw-bold" id="dh"></h5><button class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button></div><div class="offcanvas-body" id="db"></div></div>
+<div class="toast-container position-fixed bottom-0 end-0 p-3" id="tc"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+<script>
+/* 4. HELPERS + DATA (sample data, saved in localStorage key "tf") */
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const P2=n=>String(n).padStart(2,'0'),F=d=>d.getFullYear()+'-'+P2(d.getMonth()+1)+'-'+P2(d.getDate());
+const D=n=>{const d=new Date();d.setDate(d.getDate()+n);return F(d)};
+const TD=D(0),dd=(a,b)=>Math.round((new Date(b+'T00:00')-new Date(a+'T00:00'))/864e5);
+const fm=d=>new Date(d+'T00:00').toLocaleDateString('en',{month:'short',day:'numeric'});
+const wd=(d,o)=>new Date(d+'T00:00').toLocaleDateString('en',o);
+const esc=s=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const L={open:'Open',prog:'In Progress',done:'Done'},SC={open:'var(--p)',prog:'var(--y)',done:'var(--g)'};
+const PB={High:'bg-danger-subtle text-danger-emphasis',Medium:'bg-warning-subtle text-warning-emphasis',Low:'bg-info-subtle text-info-emphasis'},PC={High:'#de5f9b',Medium:'#e8b93d',Low:'#4a90e2'};
+const GOALS=[['Research Report','12 chapters',7,12,'bi-book',10],['App Prototype','20 screens',6,20,'bi-phone',16],['Final Presentation','30 slides',25,30,'bi-easel',4]];
+const QUOTES=[['The secret of getting ahead is getting started.','Mark Twain'],['Focus on being productive instead of busy.','Tim Ferriss'],['Small daily improvements lead to staggering results.','Robin Sharma']];
+function seed(){
+ const t=[[50,'Load-Up research sources','High','open',-3,2,'MC AR'],[51,'Clean-Up survey data','Medium','open',-2,4,'SO'],[52,'Finish-Up slide deck','Low','open',0,9,'PS LM'],[63,'Peer review round','Medium','open',1,12,'AR PS SO MC LM'],
+ [53,'Design system tokens','Medium','prog',-6,1,'PS'],[54,'Build prototype login flow','High','prog',-5,2,'SO AR'],[55,'Draft report introduction','High','prog',-4,3,'LM'],[57,'Kickoff meeting notes','Low','prog',-9,-1,'AR'],
+ [56,'Interview 5 users','Medium','done',-12,-4,'MC',-4],[58,'Competitor analysis','Medium','done',-14,-6,'MC PS',-6],[59,'Set up shared drive','Low','done',-15,-8,'SO',-8],[60,'Moodboard','Low','done',-13,-5,'PS',-5],[61,'Project outline','High','done',-11,-3,'LM AR',-3],[62,'Wireframes v1','Medium','done',-10,-2,'PS SO',-2]
+ ].map(([id,t,p,s,a,b,as,dn])=>({id,t,p,s,a:D(a),b:D(b),as:as.split(' '),ds:'',dn:dn==null?null:D(dn)})),d={};
+ t.forEach(x=>{if(x.dn)d[x.dn]=1});
+ return{t,d,dk:'light',p:{f:25,s:5,l:15},l:{},
+ m:[['AR','Alex Rivera','Project Lead','#8b5cf6'],['PS','Priya Shah','Designer','#db5a9b'],['SO','Sam Okafor','Developer','#e8a33d'],['MC','Mia Chen','Researcher','#4cb782'],['LM','Leo Martin','Writer','#4a7fe8'],['FM','Fabiola Marcia Walean','Member','#e0485f']],
+ a:[{t:'Priya moved #53 to In Progress',w:Date.now()-72e5},{t:'Sam moved #54 to In Progress',w:Date.now()-1e8},{t:'Mia moved #56 to Done',w:Date.now()-2e8}],
+ c:[['PS','I pushed the new design tokens, have a look when you can.'],['SO','Nice! Login flow is almost done, just fixing the form errors.'],['AR',"Great work. Let's aim to wrap the prototype by Friday."]]}}
+let S=JSON.parse(localStorage.getItem('tf')||'null')||seed();
+const save=()=>localStorage.setItem('tf',JSON.stringify(S));
+let pg='dash',fp='',fa='',wk=0,cy=new Date().getFullYear(),cm=new Date().getMonth(),sel=TD;
+const tm={m:'f',left:S.p.f*60,run:0,iv:0,k:''};
+const isOv=t=>t.s!='done'&&t.b<TD,col=t=>isOv(t)?'var(--r)':SC[t.s];
+const open_=m=>S.t.filter(x=>x.s!='done'&&x.as.includes(m)).length,done_=m=>S.t.filter(x=>x.s=='done'&&x.as.includes(m)).length;
+const av=ids=>ids.map(i=>{const m=S.m.find(x=>x[0]==i)||[i,i,'','#999'];return`<span class="av" style="background:${m[3]}" title="${m[1]}">${i}</span>`}).join('');
+const act=t=>{S.a.unshift({t,w:Date.now()});S.a=S.a.slice(0,30)};
+const ago=w=>{const m=Math.round((Date.now()-w)/6e4);return m<1?'just now':m<60?m+' min ago':m<1440?Math.round(m/60)+' h ago':Math.round(m/1440)+' days ago'};
+const streak=()=>{let n=0,i=S.d[D(0)]?0:1;while(S.d[D(-i)]){n++;i++}return n};
+const best=()=>{let b=0,c=0;for(let i=365;i>=0;i--){c=S.d[D(-i)]?c+1:0;b=Math.max(b,c)}return b};
+const donut=(p,c,s,z=150)=>{const T=p.reduce((x,y)=>x+y[1],0)||1;let a=0;const g=p.map(([k,n])=>{const b=a;a+=n/T*100;return`${k} ${b}% ${a}%`}).join(',');return`<div class="donut" style="width:${z}px;height:${z}px;background:conic-gradient(${g})"><div><b style="font-size:${z/4.5}px">${c}</b><small class="text-secondary">${s}</small></div></div>`};
+const H=(t,s,x='')=>`<div class="d-flex justify-content-between align-items-start gap-2"><div><h2 class="fw-bold mb-0">${t}</h2><p class="text-secondary">${s}</p></div>${x}</div>`;
+const PG=(a,b,c,d)=>`<div class="btn-group"><button class="btn btn-light" aria-label="Previous" onclick="${a}"><i class="bi bi-chevron-left"></i></button><button class="btn btn-light" onclick="${b}">${c}</button><button class="btn btn-light" aria-label="Next" onclick="${d}"><i class="bi bi-chevron-right"></i></button></div>`;
+const bar=p=>`<div class="progress" style="height:8px"><div class="progress-bar bg-success" style="width:${p}%"></div></div>`;
+const toast=m=>{const e=document.createElement('div');e.className='toast align-items-center text-bg-primary border-0';e.innerHTML=`<div class="d-flex"><div class="toast-body">${m}</div></div>`;$('#tc').append(e);new bootstrap.Toast(e,{delay:2500}).show()};
+const beep=()=>{try{const a=new AudioContext(),o=a.createOscillator();o.connect(a.destination);o.start();o.stop(a.currentTime+.4)}catch(e){}};
+const card=t=>`<div class="card tk p-3 mb-2" draggable="true" data-id="${t.id}" style="border-left:5px solid ${col(t)}" onclick="det(${t.id})"><div class="fw-semibold ${t.s=='done'?'text-decoration-line-through opacity-75':''}"><span class="text-primary">#${t.id}</span> ${t.t}</div><div class="d-flex justify-content-between align-items-center my-2"><span class="badge ${PB[t.p]}">${t.p}</span><small class="${isOv(t)?'text-danger':'text-secondary'}"><i class="bi bi-calendar3"></i> ${fm(t.b)}</small></div><div>${av(t.as)}</div></div>`;
+
+/* 5. PAGES: each function returns the HTML for one sidebar item */
+const R={
+dash(){const t=S.t,n=t.length,dn=t.filter(x=>x.s=='done').length,pr=t.filter(x=>x.s=='prog').length,ov=t.filter(isOv).length,dw=t.filter(x=>x.s!='done'&&x.b>=TD&&dd(TD,x.b)<7).length,h=new Date().getHours(),up=t.filter(x=>x.s!='done').sort((a,b)=>a.b<b.b?-1:1).slice(0,6);
+ const q=QUOTES[new Date().getDate()%QUOTES.length];
+ const st=(v,l,i,gc)=>`<div class="col-6 col-xl-3"><div class="card glass-hover stat-card p-3 h-100"><div class="stat-glow" style="background:${gc}"></div><div class="stat-icon mb-2" style="color:${gc}"><i class="bi ${i}"></i></div><div class="fs-2 fw-bold">${v}</div><small style="color:rgba(255,255,255,0.5)">${l}</small></div></div>`;
+ return`<div class="row g-3">
+<div class="col-lg-8"><div class="card glass-hover p-4 h-100" style="background:linear-gradient(135deg,rgba(108,79,208,0.22),rgba(123,51,126,0.12));border:1px solid rgba(255,255,255,0.2)"><h2 class="fw-bold">Good ${h<12?'Morning':h<18?'Afternoon':'Evening'}, <span style="color:#c4b5fd">Fabiola</span></h2><p style="color:rgba(255,255,255,0.55)">You have ${n-dn} tasks to finish. Have a fruitful day!</p><div class="mt-auto"><span id="clk" class="display-4" style="color:#fff"></span><div class="fw-semibold" style="color:rgba(255,255,255,0.45)">${wd(TD,{weekday:'long',year:'numeric',month:'long',day:'numeric'})}</div></div></div></div>
+<div class="col-lg-4"><div class="card glass-hover p-4 h-100"><h5 class="fw-bold">Project Progress</h5>${donut([['var(--g)',dn],['var(--y)',pr],['var(--p)',n-dn-pr]],Math.round(dn/n*100)+'%','Project complete',170)}<div class="small text-center mt-2" style="color:rgba(255,255,255,0.45)">Done (${dn}) · In progress (${pr}) · Open (${n-dn-pr})</div></div></div>
+${st(n,'Total tasks','bi-list-check','var(--p)')}${st(dn,'Completed','bi-check-circle','var(--g)')}${st(ov,'Overdue','bi-exclamation-triangle','var(--r)')}${st(dw,'Due this week','bi-calendar-event','var(--y)')}
+<div class="col-12"><div class="card glass-hover p-4"><div class="d-flex justify-content-between flex-wrap gap-2"><div class="d-flex align-items-center gap-3"><span class="stat-icon" style="background:rgba(232,185,61,0.12);color:var(--y);width:52px;height:52px;font-size:1.5rem;border-radius:16px;display:flex;align-items:center;justify-content:center"><i class="bi bi-fire"></i></span><div><small style="color:rgba(255,255,255,0.5)">Current streak</small><div class="fs-3 fw-bold">${streak()} <small class="fs-6 fw-normal" style="color:rgba(255,255,255,0.45)">days</small></div></div></div><div class="rounded-4 px-3 py-2" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1)"><small style="color:rgba(255,255,255,0.5)"><i class="bi bi-trophy"></i> Longest streak</small><div class="fw-bold">${best()} days</div></div></div>
+<p class="mt-3 mb-2">${S.d[TD]?'Today counts. Keep it going!':'Complete a task or a focus session today to keep your streak.'}</p><div class="d-flex flex-wrap gap-1">${[...Array(30)].map((_,i)=>`<span class="dot ${S.d[D(i-29)]?'on':''}"></span>`).join('')}</div><small style="color:rgba(255,255,255,0.35)">Last 30 days. A day counts when you finish a task or a focus session.</small></div></div>
+<div class="col-lg-7"><h5 class="fw-bold">Goals</h5><div class="row g-3">${GOALS.map(([a,b,x,y,i,d])=>`<div class="col-md-4"><div class="card glass-hover p-3 text-center h-100"><i class="bi ${i} fs-3" style="color:var(--p)"></i><b>${a}</b><small style="color:rgba(255,255,255,0.45)">${b}</small><div class="d-flex justify-content-between small mt-2"><span>Progress</span><b>${Math.round(x/y*100)}%</b></div>${bar(x/y*100)}<div class="d-flex justify-content-between small mt-2"><span>${x} / ${y}</span><span class="badge rounded-pill" style="background:rgba(108,79,208,0.18);color:#c4b5fd">${d} days left</span></div></div></div>`).join('')}</div></div>
+<div class="col-lg-5 d-flex flex-column gap-3"><div class="card glass-hover p-3 flex-grow-1"><h5 class="fw-bold">Upcoming Deadlines</h5>${up.map(x=>{const k=dd(TD,x.b);return`<div class="d-flex align-items-center gap-3 py-2" role="button" onclick="det(${x.id})" style="border-radius:12px;padding:4px 8px;transition:all .2s"><div class="rounded-3 text-center px-2 py-1 text-white" style="background:${col(x)};min-width:46px"><b class="d-block">${+x.b.slice(8)}</b><small>${fm(x.b).split(' ')[0]}</small></div><div class="flex-grow-1"><b class="small">#${x.id} ${x.t}</b><div><span class="badge ${PB[x.p]}">${x.p}</span> <small class="${k<0?'text-danger':''}" style="${k>=0?'color:rgba(255,255,255,0.45)':''}">${k<0?-k+' days late':k==0?'Due today':k+' days left'}</small></div></div>${av(x.as.slice(0,2))}</div>`}).join('')}</div>
+<div class="card glass-hover quote-card p-4"><i class="bi bi-quote quote-icon"></i><div style="position:relative;z-index:1"><p class="fst-italic mb-2" style="font-size:1.05rem;line-height:1.6;color:rgba(255,255,255,0.8)">"${q[0]}"</p><small style="color:rgba(255,255,255,0.4)">— ${q[1]}</small></div></div></div>
+</div>`},
+
+tasks(){const q=$('#q').value.toLowerCase(),f=S.t.filter(t=>(!q||('#'+t.id+' '+t.t).toLowerCase().includes(q))&&(!fp||t.p==fp)&&(!fa||t.as.includes(fa)));
+ return H('Task Board','Drag cards between columns to update their status. Use the search bar to find a title or #number.')+`<div class="row g-2 mb-3"><div class="col-6 col-md-3 ms-md-auto"><select class="form-select rounded-pill" aria-label="Filter by priority" onchange="fp=this.value;go('tasks')"><option value="">All priorities${['High','Medium','Low'].map(p=>`<option ${fp==p?'selected':''}>${p}`).join('')}</select></div><div class="col-6 col-md-3"><select class="form-select rounded-pill" aria-label="Filter by member" onchange="fa=this.value;go('tasks')"><option value="">Everyone${S.m.map(m=>`<option value="${m[0]}" ${fa==m[0]?'selected':''}>${m[1]}`).join('')}</select></div></div>
+<div class="row g-3">${Object.keys(L).map(s=>{const c=f.filter(t=>t.s==s);return`<div class="col-lg-4"><div class="col-k p-3 h-100" data-s="${s}"><div class="d-flex align-items-center gap-2 mb-3"><i class="bi bi-circle-fill" style="font-size:.6rem;color:${SC[s]}"></i><b>${L[s]}</b><span class="badge rounded-pill bg-primary-subtle text-primary-emphasis ms-auto">${c.length}</span></div>${c.map(card).join('')||'<p class="text-center text-secondary small">No tasks yet</p>'}<button class="btn btn-outline-primary w-100 mt-1" onclick="openM(0,'${s}')"><i class="bi bi-plus-lg"></i> Add Card</button></div></div>`}).join('')}</div>`},
+
+tl(){const n=new Date(),w=new Date(n.getFullYear(),n.getMonth(),n.getDate()-(n.getDay()+6)%7+wk*7),ds=[...Array(7)].map((_,i)=>{const d=new Date(w);d.setDate(w.getDate()+i);return F(d)}),ti=ds.indexOf(TD);
+ return H('Timeline',`${fm(ds[0])} – ${fm(ds[6])}, ${ds[6].slice(0,4)}`,PG("wk--;go('tl')","wk=0;go('tl')",'This week',"wk++;go('tl')"))+`<div class="small mb-3">${[['Open','--p'],['In progress','--y'],['Done','--g'],['Overdue','--r']].map(([a,c])=>`<span class="me-3"><i class="bi bi-circle-fill" style="font-size:.6rem;color:var(${c})"></i> ${a}</span>`).join('')}</div>
+<div class="card overflow-x-auto"><div style="min-width:760px"><div class="d-flex"><div style="width:150px;flex:none" class="p-3 fw-bold">Members</div>${ds.map(d=>`<div class="flex-fill text-center p-3 ${d==TD?'text-primary fw-bold':''}">${wd(d,{weekday:'short',day:'numeric'})}</div>`).join('')}</div>
+${S.m.map(m=>{const bs=S.t.filter(t=>t.as.includes(m[0])&&t.a<=ds[6]&&t.b>=ds[0]).map(t=>{const s=Math.max(0,dd(ds[0],t.a)),e=Math.min(6,dd(ds[0],t.b)),c=col(t);return`<div class="bar" style="margin-left:${s/7*100}%;width:${(e-s+1)/7*100}%;background:color-mix(in srgb,${c} 22%,transparent);border:1px solid ${c}" data-bs-toggle="tooltip" data-bs-title="#${t.id} ${t.t} · ${fm(t.a)} – ${fm(t.b)} · ${L[t.s]} · ${t.p}" onclick="det(${t.id})">#${t.id} ${t.t}</div>`}).join('');
+ return`<div class="d-flex border-top"><div style="width:150px;flex:none" class="p-3 d-flex align-items-center gap-2">${av([m[0]])}<small class="fw-semibold text-truncate">${m[1].split(' ')[0]}</small></div><div class="flex-grow-1 position-relative py-2" style="background-size:calc(100%/7) 100%;background-image:linear-gradient(90deg,transparent calc(100% - 1px),rgba(255,255,255,0.06) 0)">${bs||'<small class="text-secondary px-2">No tasks this week</small>'}${ti>=0?`<i class="today" style="left:${(ti+.5)/7*100}%"></i>`:''}</div></div>`}).join('')}</div></div><p class="small text-secondary mt-2">Tip: hover a bar for details, click it to open the task.</p>`},
+
+cal(){const f=new Date(cy,cm,1),st=new Date(cy,cm,1-(f.getDay()+6)%7),cells=[...Array(42)].map((_,i)=>{const d=new Date(st);d.setDate(st.getDate()+i);const k=F(d),ts=S.t.filter(x=>x.b==k),hc=ts.length?PC[['High','Medium','Low'].find(p=>ts.some(x=>x.p==p))]:''
+;
+ return`<div class="cell ${k==sel?'sel':''} ${d.getMonth()!=cm?'opacity-50':''}" style="${hc?`background:color-mix(in srgb,${hc} 20%,transparent)`:''}" onclick="sel='${k}';go('cal')"><span class="${k==TD?'tdy':''}">${d.getDate()}</span><div>${ts.map(x=>`<i class="pd" style="background:${PC[x.p]}"></i>`).join('')}</div></div>`}).join(''),ts=S.t.filter(x=>x.b==sel);
+ return H('Calendar','Deadlines by day. Click a date to see or add tasks.',PG('mv(-1)',"cy=new Date().getFullYear();cm=new Date().getMonth();sel=TD;go('cal')",'Today','mv(1)'))+`<div class="row g-3"><div class="col-lg-8"><div class="card p-3"><div class="d-flex justify-content-between mb-2"><b class="fs-5">${new Date(cy,cm).toLocaleDateString('en',{month:'long',year:'numeric'})}</b><small>${Object.entries(PC).map(([k,c])=>`<span class="ms-2"><i class="pd" style="background:${c}"></i>${k}</span>`).join('')}</small></div><div class="cal text-center small text-secondary mb-1">${['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map(d=>`<div>${d}</div>`).join('')}</div><div class="cal">${cells}</div></div></div>
+<div class="col-lg-4"><div class="card p-3 h-100"><div class="d-flex justify-content-between align-items-start"><div><div class="fs-2 fw-bold lh-1">${+sel.slice(8)}</div><small class="text-secondary">${wd(sel,{weekday:'long',month:'long',year:'numeric'})}</small></div><button class="btn btn-primary btn-sm" onclick="openM(0,'open','${sel}')"><i class="bi bi-plus-lg"></i> Add task</button></div><div class="mt-3 vstack gap-2">${ts.map(x=>`<div class="rounded-4 p-3" style="background:rgba(255,255,255,0.06);cursor:pointer;border:1px solid rgba(255,255,255,0.08)" onclick="det(${x.id})"><b class="small"><span class="text-primary">#${x.id}</span> ${x.t}</b><div class="mt-1"><span class="badge ${PB[x.p]}">${x.p}</span> <span class="badge bg-secondary-subtle text-secondary-emphasis">${L[x.s]}</span></div></div>`).join('')||'<p class="text-center text-secondary mt-4"><b>No deadlines</b><br><small>Nothing is due on this day.</small></p>'}</div></div></div></div>`},
+
+pom(){const l=S.l[TD]||[0,0],days=[...Array(7)].map((_,i)=>D(i-6)),mx=Math.max(1,...days.map(d=>(S.l[d]||[0,0])[1]));
+ return H('Pomodoro','Focus in short sprints, then take a break.','<button class="btn btn-light" data-bs-toggle="collapse" data-bs-target="#ps"><i class="bi bi-sliders"></i> Settings</button>')+`<div class="collapse mb-3" id="ps"><div class="card p-3"><div class="row g-2">${[['f','Focus'],['s','Short break'],['l','Long break']].map(([k,n])=>`<div class="col-4"><label class="small">${n} (min)</label><input type="number" min="1" max="90" class="form-control" value="${S.p[k]}" onchange="S.p.${k}=Math.max(1,+this.value);if(!tm.run)tm.left=S.p[tm.m]*60;save();go('pom')"></div>`).join('')}</div></div></div>
+<div class="row g-3"><div class="col-lg-8"><div class="card p-4 text-center"><div class="btn-group mx-auto mb-4">${[['f','Focus'],['s','Short Break'],['l','Long Break']].map(([k,n])=>`<button class="btn ${tm.m==k?'btn-primary':'btn-light'}" onclick="setM('${k}')">${n} <small>${S.p[k]}m</small></button>`).join('')}</div><div id="ring"></div>
+<div class="mt-4"><button class="btn btn-primary btn-lg px-4" onclick="tg()"><i class="bi bi-${tm.run?'pause':'play'}-fill"></i> ${tm.run?'Pause':'Start'}</button> <button class="btn btn-light btn-lg" onclick="setM(tm.m)"><i class="bi bi-arrow-counterclockwise"></i> Reset</button></div>
+<div class="mt-4 mx-auto w-100" style="max-width:340px"><label class="small text-secondary" for="lk"><i class="bi bi-link-45deg"></i> Working on</label><select id="lk" class="form-select rounded-pill" onchange="tm.k=this.value"><option value="">No task linked${S.t.filter(x=>x.s!='done').map(x=>`<option value="${x.id}" ${tm.k==x.id?'selected':''}>#${x.id} ${x.t}`).join('')}</select></div></div></div>
+<div class="col-lg-4 vstack gap-3"><div class="row g-3"><div class="col-6"><div class="card p-3"><div class="fs-3 fw-bold">${l[0]}</div><small>Sessions today</small></div></div><div class="col-6"><div class="card p-3"><div class="fs-3 fw-bold">${l[1]}m</div><small>Focus time today</small></div></div></div>
+<div class="card p-3"><b>Last 7 days</b><div class="d-flex align-items-end gap-2 mt-3" style="height:120px">${days.map(d=>{const m=(S.l[d]||[0,0])[1];return`<div class="flex-fill text-center small"><div class="rounded" style="height:${Math.max(4,m/mx*90)}px;background:${m?'var(--p)':'rgba(255,255,255,0.08)'}" title="${m} min"></div>${wd(d,{weekday:'short'})}</div>`}).join('')}</div></div></div></div>`},
+
+ana(){const t=S.t,dn=t.filter(x=>x.s=='done').length,pr=t.filter(x=>x.s=='prog').length,ov=t.filter(isOv).length,pr2=t.filter(x=>x.s=='prog'&&!isOv(x)).length,op2=t.filter(x=>x.s=='open'&&!isOv(x)).length,days=[...Array(7)].map((_,i)=>D(i-6)),c=days.map(d=>t.filter(x=>x.dn==d).length),mx=Math.max(1,...c),ld=S.m.filter(m=>open_(m[0])>3);
+ const st=(v,l,i,k)=>`<div class="col-6 col-xl-3"><div class="card p-3 flex-row gap-3 align-items-center"><i class="bi ${i} fs-3 ${k}"></i><div><div class="fs-3 fw-bold lh-1">${v}</div><small>${l}</small></div></div></div>`,X=i=>i*95+25,Y=v=>150-v/mx*130;
+ return H('Analytics','How the team is doing, at a glance.')+`<div class="row g-3 mb-3">${st(dn,'Finished','bi-check-circle','text-success')}${st(pr,'In progress','bi-hourglass-split','text-warning')}${st(ov,'Overdue','bi-exclamation-triangle','text-danger')}${st(Math.round(dn/t.length*100)+'%','Completion rate','bi-percent','text-primary')}</div>
+<div class="alert ${ld.length?'alert-danger':'alert-success'} rounded-4 border-0">${ld.length?`<b>Overloaded:</b> ${ld.map(m=>m[1]+' ('+open_(m[0])+' open)').join(', ')}. Consider sharing some of their tasks.`:'Workload is balanced. Nobody has more than 3 open tasks.'}</div>
+<div class="row g-3 mb-3"><div class="col-lg-8"><div class="card p-4 h-100"><b>Tasks completed (last 7 days)</b><svg viewBox="0 0 640 190" class="w-100 mt-2" role="img" aria-label="Line chart of tasks completed per day"><defs><linearGradient id="lg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6c4fd0" stop-opacity=".3"/><stop offset="1" stop-color="#6c4fd0" stop-opacity="0"/></linearGradient></defs><polygon fill="url(#lg)" points="${c.map((v,i)=>X(i)+','+Y(v)).join(' ')} ${X(6)},160 ${X(0)},160"/><polyline fill="none" stroke="#6c4fd0" stroke-width="3" stroke-linejoin="round" points="${c.map((v,i)=>X(i)+','+Y(v)).join(' ')}"/>${c.map((v,i)=>`<circle cx="${X(i)}" cy="${Y(v)}" r="5" fill="#de5f9b"/><text x="${X(i)}" y="178" text-anchor="middle" font-size="13" fill="rgba(255,255,255,0.6)">${wd(days[i],{weekday:'short'})}</text>`).join('')}</svg></div></div>
+<div class="col-lg-4"><div class="card p-4 h-100"><b>Tasks by status</b><div class="my-3">${donut([['var(--g)',dn],['var(--y)',pr2],['var(--p)',op2],['var(--r)',ov]],t.length,'Total tasks',160)}</div><div class="small text-center">Done (${dn}) · In progress (${pr2}) · Open (${op2}) · Overdue (${ov})</div></div></div></div>
+<div class="card p-4"><b>Workload per member</b>${S.m.map(m=>{const o=open_(m[0]),d=done_(m[0]);return`<div class="mt-3"><div class="d-flex justify-content-between small"><span>${av([m[0]])} ${m[1].split(' ')[0]}</span><span>${o} open · ${d} done</span></div><div class="progress-stacked mt-1"><div class="progress" style="width:${o/8*100}%"><div class="progress-bar" style="background:var(--p)"></div></div><div class="progress" style="width:${d/8*100}%"><div class="progress-bar bg-success"></div></div></div></div>`}).join('')}</div>`},
+
+mem(){return H('Members',S.m.length+' people on the team','<button class="btn btn-primary" onclick="addM()"><i class="bi bi-person-plus"></i> Add member</button>')+`<div class="row g-3 mb-3">${S.m.map(m=>{const o=open_(m[0]),d=done_(m[0]),p=o+d?Math.round(d/(o+d)*100):0;return`<div class="col-md-6 col-xl-3"><div class="card p-3 h-100"><div class="d-flex align-items-center gap-2"><span class="av rounded-4" style="background:${m[3]};width:48px;height:48px;font-size:.9rem">${m[0]}</span><div><b>${m[1]}${m[0]=='FM'?' <small class="text-primary">(you)</small>':''}</b><div class="small text-secondary">${m[2]}</div></div></div><div class="row g-2 text-center my-3"><div class="col"><div class="rounded-3 py-2 bg-primary-subtle"><b>${o}</b><div class="small">Open</div></div></div><div class="col"><div class="rounded-3 py-2 bg-success-subtle"><b>${d}</b><div class="small">Done</div></div></div></div><div class="d-flex justify-content-between small"><span>Progress</span><b>${p}%</b></div>${bar(p)}</div></div>`}).join('')}</div>
+<div class="row g-3"><div class="col-lg-8"><div class="card p-3"><b class="mb-2"><i class="bi bi-chat-dots"></i> Team Chat</b><div class="vstack gap-2 overflow-auto p-2" style="height:260px" id="ch">${S.c.map(([w,x])=>{const me=w=='FM';return`<div class="d-flex gap-2 ${me?'flex-row-reverse':''}">${av([w])}<div class="rounded-4 px-3 py-2 ${me?'text-white':''}" style="background:${me?'var(--p)':'rgba(255,255,255,0.08)'}">${me?'':`<small class="d-block fw-semibold text-primary">${(S.m.find(m=>m[0]==w)||[])[1]}</small>`}${x}</div></div>`}).join('')}</div><form class="input-group mt-2" onsubmit="chat(event)"><input id="cm_" class="form-control rounded-start-pill" placeholder="Message here…" aria-label="Message" autocomplete="off"><button class="btn btn-primary" aria-label="Send"><i class="bi bi-send"></i></button></form></div></div>
+<div class="col-lg-4"><div class="card p-3 h-100"><b class="mb-2"><i class="bi bi-activity"></i> Activity</b>${S.a.slice(0,8).map(a=>`<div class="small py-2 border-bottom"><b>${a.t.split(' ')[0]}</b> ${a.t.split(' ').slice(1).join(' ')}<div class="text-secondary">${ago(a.w)}</div></div>`).join('')}</div></div></div>`}
+};
+
+/* 6. ACTIONS: routing, tasks, pomodoro, chat */
+const NAV=[['dash','Dashboard','bi-grid'],['tasks','Tasks','bi-list-check'],['tl','Timeline','bi-bar-chart-steps'],['cal','Calendar','bi-calendar3'],['pom','Pomodoro','bi-stopwatch'],['ana','Analytics','bi-graph-up'],['mem','Members','bi-people']];
+const clk=()=>{const e=$('#clk');if(e)e.textContent=new Date().toLocaleTimeString('en',{hour:'numeric',minute:'2-digit'})};
+const rr=()=>{const e=$('#ring');if(e)e.innerHTML=donut([['var(--p)',tm.left],['rgba(255,255,255,0.08)',S.p[tm.m]*60-tm.left]],P2(Math.floor(tm.left/60))+':'+P2(tm.left%60),{f:'Focus',s:'Short break',l:'Long break'}[tm.m],250)};
+function hdr(){$('#stk').innerHTML=`<i class="bi bi-fire text-warning"></i> ${streak()}`;const o=S.t.filter(isOv).length;$('#nf').innerHTML=`<li class="dropdown-item-text small">${o?o+' overdue task'+(o>1?'s':'')+' need attention':'You are all caught up'}</li>`}
+function go(p){pg=p;$('#nav').innerHTML=NAV.map(([k,n,i])=>`<a class="nav-link ${k==p?'active':''}" onclick="go('${k}')"><i class="bi ${i}"></i>${n}</a>`).join('');$('#main').innerHTML=R[p]();rr();clk();hdr();$$('[data-bs-toggle=tooltip]').forEach(e=>new bootstrap.Tooltip(e));bootstrap.Offcanvas.getInstance('#side')?.hide()}
+const mv=n=>{cm+=n;if(cm<0){cm=11;cy--}if(cm>11){cm=0;cy++}go('cal')};
+function move(id,s){const t=S.t.find(x=>x.id==id);if(!t||t.s==s)return;t.s=s;if(s=='done'){t.dn=TD;S.d[TD]=1;toast('Task done! Streak updated.')}else t.dn=null;act(`Fabiola moved #${id} to ${L[s]}`);save();go(pg)}
+function openM(id,s,dt){const t=id?S.t.find(x=>x.id==id):{};$('#mt').textContent=id?'Edit Task':'Add New Task';$('#mi').value=id||'';$('#f1').value=t.t||'';$('#f2').value=t.ds||'';$('#f3').value=t.p||'Medium';$('#f4').value=t.s||s||'open';$('#f5').value=t.a||TD;$('#f6').value=t.b||dt||D(3);
+ $('#f7').innerHTML=S.m.map(m=>`<input type="checkbox" class="btn-check" id="m_${m[0]}" value="${m[0]}" ${(t.as||[]).includes(m[0])?'checked':''}><label class="btn btn-outline-primary btn-sm rounded-pill" for="m_${m[0]}">${m[1].split(' ')[0]}</label>`).join('');bootstrap.Modal.getOrCreateInstance('#mo').show()}
+function sv(e){e.preventDefault();const id=+$('#mi').value,o={t:esc($('#f1').value),ds:esc($('#f2').value),p:$('#f3').value,s:$('#f4').value,a:$('#f5').value||TD,b:$('#f6').value,as:$$('#f7 :checked').map(x=>x.value)};if(!o.as.length)o.as=['FM'];
+ let t=S.t.find(x=>x.id==id);if(t)Object.assign(t,o);else{t={...o,id:Math.max(...S.t.map(x=>x.id))+1};S.t.push(t)}
+ t.dn=t.s=='done'?t.dn||TD:null;if(t.dn==TD)S.d[TD]=1;act(`Fabiola ${id?'edited':'added'} #${t.id}`);save();bootstrap.Modal.getInstance('#mo').hide();go(pg)}
+function del(id){if(!confirm('Delete this task?'))return;S.t=S.t.filter(x=>x.id!=id);act(`Fabiola deleted #${id}`);save();bootstrap.Offcanvas.getInstance('#dt').hide();go(pg)}
+function det(id){const t=S.t.find(x=>x.id==id),k=dd(TD,t.b),tot=Math.max(1,dd(t.a,t.b));$('#dh').textContent='#'+t.id+' '+t.t;
+ $('#db').innerHTML=`<div class="d-flex gap-2 mb-3"><span class="badge ${PB[t.p]} align-self-center">${t.p}</span><select class="form-select form-select-sm w-auto rounded-pill" aria-label="Status" onchange="move(${id},this.value);det(${id})">${Object.keys(L).map(s=>`<option value="${s}" ${t.s==s?'selected':''}>${L[s]}`).join('')}</select></div>
+ ${donut(t.s=='done'?[['var(--g)',1]]:k<0?[['var(--r)',1]]:[['var(--p)',Math.min(k,tot)],['rgba(255,255,255,0.08)',Math.max(tot-k,0)]],t.s=='done'?'✓':Math.abs(k),t.s=='done'?'done':k<0?'days late':'days left',140)}
+ <p class="mt-3"><i class="bi bi-calendar3"></i> ${fm(t.a)} – ${fm(t.b)}</p><div class="mb-3">${av(t.as)}</div><p class="text-secondary">${t.ds||'No description yet.'}</p>
+ <button class="btn btn-primary me-2" onclick="bootstrap.Offcanvas.getInstance('#dt').hide();openM(${id})"><i class="bi bi-pencil"></i> Edit</button><button class="btn btn-outline-danger rounded-pill" onclick="del(${id})"><i class="bi bi-trash"></i> Delete</button>`;bootstrap.Offcanvas.getOrCreateInstance('#dt').show()}
+function setM(m){clearInterval(tm.iv);tm.run=0;tm.m=m;tm.left=S.p[m]*60;go('pom')}
+function tg(){if(tm.run){clearInterval(tm.iv);tm.run=0}else{tm.run=1;tm.iv=setInterval(()=>{if(--tm.left<=0)fin();else rr()},1000)}go('pom')}
+function fin(){clearInterval(tm.iv);tm.run=0;beep();if(tm.m=='f'){const a=S.l[TD]||(S.l[TD]=[0,0]);a[0]++;a[1]+=S.p.f;S.d[TD]=1;act('Fabiola finished a focus session'+(tm.k?' on #'+tm.k:''));toast('Focus session done! Time for a break.');tm.m=a[0]%4?'s':'l'}else tm.m='f';tm.left=S.p[tm.m]*60;save();if(pg=='pom')go('pom');else hdr()}
+function chat(e){e.preventDefault();const x=esc($('#cm_').value.trim());if(!x)return;S.c.push(['FM',x]);save();go('mem');const c=$('#ch');c.scrollTop=c.scrollHeight}
+function addM(){const n=(prompt('Member name?')||'').trim();if(!n)return;const r=esc((prompt('Role?')||'Member').trim()),i=n.split(/\s+/).map(w=>w[0]).join('').slice(0,2).toUpperCase();S.m.push([i,esc(n),r,['#8b5cf6','#db5a9b','#e8a33d','#4cb782','#4a7fe8'][S.m.length%5]]);act('Fabiola added '+esc(n)+' to the team');save();go('mem')}
+
+/* 7. START: drag and drop, search, dark mode */
+document.addEventListener('dragstart',e=>{const c=e.target.closest('.tk');if(c)e.dataTransfer.setData('text/plain',c.dataset.id)});
+document.addEventListener('dragover',e=>{if(e.target.closest('.col-k'))e.preventDefault()});
+document.addEventListener('drop',e=>{const k=e.target.closest('.col-k');if(k){e.preventDefault();move(+e.dataTransfer.getData('text/plain'),k.dataset.s)}});
+$('#q').oninput=()=>go('tasks');
+document.documentElement.dataset.bsTheme=S.dk||'light';
+$('#dk').onclick=()=>{const h=document.documentElement,x=h.dataset.bsTheme=='dark'?'light':'dark';h.dataset.bsTheme=x;S.dk=x;save()};
+setInterval(clk,1000);
+go('dash');
+</script>
+</body>
+</html>
