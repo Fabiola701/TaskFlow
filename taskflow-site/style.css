@@ -1,0 +1,370 @@
+
+/* ============================================================
+   1. THEME — Bootstrap variables + original palette (unchanged)
+   ============================================================ */
+:root{
+  --p:#6c4fd0;
+  --bg:#f2effb;
+  --c:#fff;
+  --y:#e8b93d;
+  --g:#4cb782;
+  --r:#de5f9b;
+  --bs-body-font-family:Poppins,sans-serif;
+
+  /* ──────────────────────────────────────────────────────────
+     GLASSMORPHISM SYSTEM — edit these to tweak the glass look
+     ────────────────────────────────────────────────────────── */
+  --glass-bg:       rgba(255,255,255,0.12);
+  --glass-bg-hover: rgba(255,255,255,0.18);
+  --glass-border:   rgba(255,255,255,0.25);
+  --glass-border-h: rgba(255,255,255,0.4);
+  --glass-blur:     blur(20px);
+  --glass-radius:   24px;
+  --glass-shadow:   0 8px 32px rgba(108,79,208,0.15);
+  --glass-shadow-h: 0 12px 40px rgba(108,79,208,0.25);
+}
+
+/* Dark mode: deeper glass */
+[data-bs-theme=dark]{
+  --bg:#0a0618;--c:#221e3d;
+  --glass-bg:       rgba(15,10,40,0.45);
+  --glass-bg-hover: rgba(20,15,50,0.55);
+  --glass-border:   rgba(255,255,255,0.1);
+  --glass-border-h: rgba(255,255,255,0.18);
+  --glass-shadow:   0 8px 32px rgba(0,0,0,0.3);
+  --glass-shadow-h: 0 12px 40px rgba(0,0,0,0.4);
+}
+
+/* ============================================================
+   2. BACKGROUND — gradient + floating orbs
+   ============================================================ */
+body{
+  background:linear-gradient(135deg,#210635 0%,#420D4B 22%,#7B337E 45%,#6667AB 72%,#F5D5E0 100%);
+  background-attachment:fixed;
+  min-height:100vh;
+  overflow-x:hidden;
+  color:rgba(255,255,255,0.88);
+}
+[data-bs-theme=dark] body{
+  background:linear-gradient(135deg,#080415 0%,#150a2e 25%,#251545 50%,#1e1855 75%,#0d0820 100%);
+}
+
+/* Floating gradient orbs — gives glass something to blur over */
+.orbs{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:0}
+.orbs::before,.orbs::after,.orbs .orb-3{
+  content:'';position:absolute;border-radius:50%;
+  filter:blur(80px);opacity:.45;
+  animation:orbFloat 20s ease-in-out infinite alternate;
+}
+.orbs::before{
+  width:500px;height:500px;
+  background:radial-gradient(circle,#6667AB,transparent 70%);
+  top:-10%;left:-5%;
+}
+.orbs::after{
+  width:420px;height:420px;
+  background:radial-gradient(circle,#de5f9b,transparent 70%);
+  bottom:5%;right:-8%;
+  animation-delay:-7s;animation-duration:25s;
+}
+.orbs .orb-3{
+  width:360px;height:360px;
+  background:radial-gradient(circle,#7B337E,transparent 70%);
+  top:40%;left:48%;
+  animation-delay:-14s;animation-duration:22s;
+}
+@keyframes orbFloat{
+  0%  {transform:translate(0,0) scale(1)}
+  33% {transform:translate(40px,-30px) scale(1.08)}
+  66% {transform:translate(-25px,40px) scale(.95)}
+  100%{transform:translate(30px,20px) scale(1.05)}
+}
+[data-bs-theme=dark] .orbs::before,
+[data-bs-theme=dark] .orbs::after,
+[data-bs-theme=dark] .orbs .orb-3{opacity:.25}
+
+/* ============================================================
+   3. GLASS UTILITY CLASS
+   ============================================================ */
+.glass{
+  background:var(--glass-bg);
+  backdrop-filter:var(--glass-blur);
+  -webkit-backdrop-filter:var(--glass-blur);
+  border:1px solid var(--glass-border);
+  border-radius:var(--glass-radius);
+  box-shadow:var(--glass-shadow);
+  transition:all .25s ease;
+}
+.glass-hover:hover{
+  background:var(--glass-bg-hover);
+  border-color:var(--glass-border-h);
+  box-shadow:var(--glass-shadow-h);
+  transform:translateY(-2px);
+}
+/* Fallback when backdrop-filter is unsupported */
+@supports not (backdrop-filter:blur(1px)){
+  .glass,.card{background:rgba(40,25,80,0.85)!important}
+}
+
+/* ============================================================
+   4. APP FRAME — the big floating glass container
+   ============================================================ */
+.app-frame{
+  position:relative;z-index:1;
+  margin:1rem;
+  background:rgba(255,255,255,0.05);
+  backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px);
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:28px;
+  min-height:calc(100vh - 2rem);
+}
+
+/* ============================================================
+   5. SIDEBAR
+   ============================================================ */
+.sw{width:250px;flex:none;position:sticky;top:0;align-self:flex-start;height:calc(100vh - 2rem)}
+@media(max-width:991px){.sw{width:0}}
+.offcanvas-lg .offcanvas-body{padding:0}
+.sidebar-inner{height:100%;display:flex;flex-direction:column}
+#nav .nav-link{
+  display:flex;gap:.7rem;align-items:center;
+  padding:.65rem 1rem;border-radius:50rem;
+  color:rgba(255,255,255,0.65);
+  cursor:pointer;font-weight:500;
+  transition:all .25s ease;
+}
+#nav .nav-link:hover{background:rgba(255,255,255,0.08);color:#fff}
+#nav .nav-link.active{
+  background:rgba(255,255,255,0.18);
+  color:#fff;
+  box-shadow:0 4px 15px rgba(108,79,208,0.25);
+  border:1px solid rgba(255,255,255,0.2);
+}
+.sidebar-motto{
+  background:rgba(255,255,255,0.07);
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:16px;
+  color:rgba(255,255,255,0.6);
+}
+
+/* ============================================================
+   6. CARDS — restyle Bootstrap .card to glass
+   ============================================================ */
+.card{
+  --bs-card-bg:transparent;
+  background:var(--glass-bg);
+  backdrop-filter:var(--glass-blur);
+  -webkit-backdrop-filter:var(--glass-blur);
+  border:1px solid var(--glass-border);
+  border-radius:var(--glass-radius);
+  box-shadow:var(--glass-shadow);
+  color:rgba(255,255,255,0.88);
+  transition:all .25s ease;
+}
+
+/* ============================================================
+   7. BUTTONS
+   ============================================================ */
+.btn{transition:all .25s ease}
+.btn-primary{
+  --bs-btn-bg:var(--p);--bs-btn-border-color:rgba(255,255,255,0.2);
+  --bs-btn-hover-bg:#5a3fb8;--bs-btn-hover-border-color:rgba(255,255,255,0.3);
+  --bs-btn-active-bg:#5a3fb8;--bs-btn-active-border-color:rgba(255,255,255,0.3);
+  border-radius:50rem;
+  box-shadow:0 4px 15px rgba(108,79,208,0.3);
+}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(108,79,208,0.4)}
+.btn-outline-primary{
+  --bs-btn-color:rgba(255,255,255,0.8);
+  --bs-btn-border-color:rgba(255,255,255,0.2);
+  --bs-btn-hover-bg:var(--p);--bs-btn-hover-border-color:var(--p);
+  --bs-btn-hover-color:#fff;
+  --bs-btn-active-bg:var(--p);--bs-btn-active-border-color:var(--p);
+  border-radius:50rem;
+}
+.btn-light{
+  --bs-btn-bg:rgba(255,255,255,0.08);
+  --bs-btn-border-color:rgba(255,255,255,0.12);
+  --bs-btn-hover-bg:rgba(255,255,255,0.16);
+  --bs-btn-hover-border-color:rgba(255,255,255,0.22);
+  --bs-btn-color:rgba(255,255,255,0.85);
+  --bs-btn-hover-color:#fff;
+  border-radius:50rem;
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+}
+.btn-close{filter:invert(1) grayscale(100%) brightness(200%)}
+.btn-group{border-radius:50rem;overflow:hidden}
+.btn-group .btn{border-radius:0}
+.btn-group .btn:first-child{border-radius:50rem 0 0 50rem}
+.btn-group .btn:last-child{border-radius:0 50rem 50rem 0}
+
+/* ============================================================
+   8. FORM CONTROLS
+   ============================================================ */
+.form-control,.form-select{
+  background:rgba(255,255,255,0.07);
+  border:1px solid rgba(255,255,255,0.15);
+  color:rgba(255,255,255,0.9);
+  border-radius:14px;
+  transition:all .25s ease;
+}
+.form-control:focus,.form-select:focus{
+  background:rgba(255,255,255,0.12);
+  border-color:rgba(108,79,208,0.5);
+  color:#fff;
+  box-shadow:0 0 0 3px rgba(108,79,208,0.15);
+}
+.form-control::placeholder{color:rgba(255,255,255,0.35)}
+.form-floating>.form-control~label,
+.form-floating>.form-select~label{color:rgba(255,255,255,0.5)}
+.input-group-text{
+  background:rgba(255,255,255,0.07);
+  border:1px solid rgba(255,255,255,0.15);
+  color:rgba(255,255,255,0.5);
+}
+.search-glass{
+  background:rgba(255,255,255,0.07);
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:50rem!important;overflow:hidden;
+}
+.search-glass .input-group-text{background:transparent;border:0;color:rgba(255,255,255,0.45)}
+.search-glass .form-control{background:transparent;border:0;color:#fff}
+.search-glass .form-control::placeholder{color:rgba(255,255,255,0.3)}
+
+/* ============================================================
+   9. TYPOGRAPHY & BADGES — readable on glass
+   ============================================================ */
+.text-primary{color:var(--p)!important}
+.text-secondary{color:rgba(255,255,255,0.5)!important}
+.text-body{color:rgba(255,255,255,0.85)!important}
+.text-danger{color:#f87171!important}
+.text-success{color:#6ee7b7!important}
+.text-warning{color:#fbbf24!important}
+.badge{font-weight:500;border-radius:50rem}
+.bg-primary-subtle{background:rgba(108,79,208,0.2)!important;color:#c4b5fd!important}
+.text-primary-emphasis{color:#c4b5fd!important}
+.bg-danger-subtle{background:rgba(222,95,155,0.2)!important}
+.text-danger-emphasis{color:#fca5c3!important}
+.bg-warning-subtle{background:rgba(232,185,61,0.2)!important}
+.text-warning-emphasis{color:#fde68a!important}
+.bg-info-subtle{background:rgba(74,144,226,0.2)!important}
+.text-info-emphasis{color:#93c5fd!important}
+.bg-success-subtle{background:rgba(76,183,130,0.2)!important}
+.text-success-emphasis{color:#6ee7b7!important}
+.bg-secondary-subtle{background:rgba(255,255,255,0.08)!important}
+.text-secondary-emphasis{color:rgba(255,255,255,0.65)!important}
+h1,h2,h3,h4,h5,h6,.fs-1,.fs-2,.fs-3,.fs-4,.fs-5{color:#fff}
+.fw-bold,.fw-semibold{color:rgba(255,255,255,0.95)}
+small{font-weight:500}
+.border-bottom{border-color:rgba(255,255,255,0.1)!important}
+.border-top{border-color:rgba(255,255,255,0.1)!important}
+
+/* ============================================================
+   10. COMPONENTS — preserved from original, glass-adapted
+   ============================================================ */
+.av{width:34px;height:34px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;color:#fff;font-size:.7rem;font-weight:600;border:2px solid rgba(255,255,255,0.3);vertical-align:middle}
+.av+.av{margin-left:-9px}
+.donut{border-radius:50%;display:grid;place-items:center;margin:auto}
+.donut>div{width:76%;height:76%;border-radius:50%;background:rgba(255,255,255,0.07);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1;text-align:center}
+.dot{width:22px;height:22px;border-radius:50%;background:rgba(255,255,255,0.08);transition:all .2s}.dot.on{background:var(--p);box-shadow:0 0 8px rgba(108,79,208,0.4)}
+.col-k{background:rgba(255,255,255,0.05);border-radius:20px;min-height:260px;border:1px solid rgba(255,255,255,0.08)}
+.tk{cursor:grab;transition:all .25s ease}.tk:hover{transform:translateY(-3px);box-shadow:var(--glass-shadow-h)}
+.bar{border-radius:50rem;padding:.2rem .8rem;margin:4px 0;cursor:pointer;white-space:nowrap;overflow:hidden;font-size:.8rem}
+.today{position:absolute;top:0;bottom:0;border-left:2px dashed rgba(167,139,250,0.6);pointer-events:none}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.cell{min-height:70px;border-radius:14px;padding:.4rem;cursor:pointer;border:2px solid transparent;transition:all .2s}
+.cell:hover{background:rgba(255,255,255,0.06)}
+.cell.sel{border-color:rgba(167,139,250,0.5);background:rgba(108,79,208,0.12)}
+.tdy{background:var(--p);color:#fff;border-radius:50%;padding:0 .4rem}
+.pd{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:2px}
+
+/* ============================================================
+   11. PROGRESS BARS
+   ============================================================ */
+.progress{background:rgba(255,255,255,0.08);border-radius:50rem;overflow:hidden}
+.progress-bar{border-radius:50rem}
+
+/* ============================================================
+   12. MODALS & OFFCANVAS — glass
+   ============================================================ */
+.modal-content{
+  background:rgba(30,20,60,0.8)!important;
+  backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+  border:1px solid var(--glass-border);
+  color:rgba(255,255,255,0.9);
+}
+.offcanvas{
+  background:rgba(30,20,60,0.85)!important;
+  backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+  border-color:var(--glass-border)!important;
+  color:rgba(255,255,255,0.9);
+}
+
+/* ============================================================
+   13. DROPDOWNS & TOASTS
+   ============================================================ */
+.dropdown-menu{
+  background:rgba(30,20,60,0.88);
+  backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur);
+  border:1px solid var(--glass-border);
+  border-radius:16px;
+  color:rgba(255,255,255,0.85);
+}
+.dropdown-item,.dropdown-item-text{color:rgba(255,255,255,0.78)}
+.dropdown-item:hover,.dropdown-item:focus{background:rgba(255,255,255,0.1);color:#fff}
+.toast{
+  background:rgba(108,79,208,0.9)!important;
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  border:1px solid rgba(255,255,255,0.2);
+  border-radius:16px!important;
+}
+
+/* ============================================================
+   14. ALERTS
+   ============================================================ */
+.alert{backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-radius:20px}
+.alert-success{background:rgba(76,183,130,0.12)!important;border-color:rgba(76,183,130,0.25)!important;color:#6ee7b7!important}
+.alert-danger{background:rgba(222,95,155,0.12)!important;border-color:rgba(222,95,155,0.25)!important;color:#fca5c3!important}
+
+/* ============================================================
+   15. CUSTOM SCROLLBAR
+   ============================================================ */
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.12);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:rgba(255,255,255,0.22)}
+
+/* ============================================================
+   16. DASHBOARD — stat card + quote card
+   ============================================================ */
+.stat-card{position:relative;overflow:hidden}
+.stat-card .stat-icon{
+  width:48px;height:48px;border-radius:16px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.3rem;
+  background:rgba(255,255,255,0.08);
+}
+.stat-card .stat-glow{
+  position:absolute;width:90px;height:90px;border-radius:50%;
+  filter:blur(40px);opacity:.25;top:-15px;right:-15px;
+}
+.quote-card{position:relative;overflow:hidden}
+.quote-card .quote-icon{font-size:3rem;opacity:.1;position:absolute;top:8px;left:14px}
+
+/* ============================================================
+   17. RESPONSIVE
+   ============================================================ */
+@media(max-width:991px){
+  .app-frame{margin:.5rem;border-radius:20px;min-height:calc(100vh - 1rem)}
+  .orbs::before{width:260px;height:260px}
+  .orbs::after{width:220px;height:220px}
+  .orbs .orb-3{width:180px;height:180px}
+  .offcanvas-start{
+    background:rgba(25,12,55,0.92)!important;
+    backdrop-filter:blur(24px)!important;-webkit-backdrop-filter:blur(24px)!important;
+  }
+}
+@media(max-width:575px){
+  .app-frame{margin:.25rem;border-radius:16px}
+  .card{border-radius:18px}
+}
