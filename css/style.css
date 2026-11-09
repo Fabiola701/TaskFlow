@@ -1,0 +1,348 @@
+
+/* ============================================================
+   1. THEME — Light lilac palette with CSS variables
+   ============================================================ */
+:root{
+  --bg:#f6f3fd; --bg2:#ece6fb;
+  --card:#ffffff; --card-border:#e7e0f8;
+  --ink:#2b2540; --muted:#6b6385;
+  --track:#ece6fb; --line:#ece6fb; --tint:#f3effc;
+  --p:#7a5ad6; --p-soft:#e9e1fb; --p-ink:#5a3fb8;
+  --g:#3fa876; --y:#e8b93d; --r:#de5f9b; --b:#4a90e2;
+  /* WCAG AA dark text shades for badges in light mode */
+  --g-ink:#1f7a54; --y-ink:#8a6100; --r-ink:#b02e6f; --b-ink:#1d5fa8;
+  --bs-body-font-family:Poppins,sans-serif;
+  --shadow-sm:0 1px 3px rgba(122,90,214,0.06);
+  --shadow:0 4px 16px rgba(122,90,214,0.08);
+  --shadow-hover:0 8px 24px rgba(122,90,214,0.12);
+}
+
+[data-bs-theme=dark]{
+  --bg:#15122a; --bg2:#1c1836;
+  --card:#221e3d; --card-border:rgba(255,255,255,0.1);
+  --ink:#eeeaf8; --muted:#b3abd0;
+  --track:rgba(255,255,255,0.1); --line:rgba(255,255,255,0.1); --tint:#2a2550;
+  --p:#a78bfa; --p-soft:rgba(122,90,214,0.2); --p-ink:#c4b5fd;
+  --g-ink:#6ee7b7; --y-ink:#fde68a; --r-ink:#fca5c3; --b-ink:#93c5fd;
+  --shadow-sm:0 1px 3px rgba(0,0,0,0.2);
+  --shadow:0 4px 16px rgba(0,0,0,0.25);
+  --shadow-hover:0 8px 24px rgba(0,0,0,0.35);
+}
+
+/* ============================================================
+   2. BACKGROUND — soft gradient, no orbs
+   ============================================================ */
+body{
+  background:linear-gradient(135deg,var(--bg) 0%,var(--bg2) 100%);
+  background-attachment:fixed;
+  min-height:100vh;
+  overflow-x:hidden;
+  color:var(--ink);
+}
+
+/* Hide orbs entirely */
+.orbs{display:none}
+
+/* ============================================================
+   3. APP FRAME — no backdrop-filter
+   ============================================================ */
+.app-frame{
+  position:relative;z-index:1;
+  margin:1rem;
+  border-radius:28px;
+  min-height:calc(100vh - 2rem);
+}
+
+/* ============================================================
+   4. SIDEBAR
+   ============================================================ */
+.sw{width:250px;flex:none;position:sticky;top:0;align-self:flex-start;height:calc(100vh - 2rem)}
+@media(max-width:991px){.sw{width:0}}
+.offcanvas-lg .offcanvas-body{padding:0}
+.sidebar-inner{height:100%;display:flex;flex-direction:column}
+#nav .nav-link{
+  display:flex;gap:.7rem;align-items:center;
+  padding:.65rem 1rem;border-radius:50rem;
+  color:var(--muted);
+  cursor:pointer;font-weight:500;
+  transition:all .25s ease;
+}
+#nav .nav-link:hover{background:var(--tint);color:var(--ink)}
+#nav .nav-link.active{
+  background:var(--p-soft);
+  color:var(--p-ink);
+  box-shadow:none;
+  border:none;
+}
+.sidebar-motto{
+  background:var(--tint);
+  border:1px solid var(--card-border);
+  border-radius:16px;
+  color:var(--muted);
+}
+
+/* ============================================================
+   5. CARDS — white with thin lilac border + soft shadow
+   ============================================================ */
+.card{
+  --bs-card-bg:var(--card);
+  background:var(--card);
+  border:1px solid var(--card-border);
+  border-radius:20px;
+  box-shadow:var(--shadow);
+  color:var(--ink);
+  transition:all .25s ease;
+}
+.glass-hover:hover{
+  box-shadow:var(--shadow-hover);
+  transform:translateY(-2px);
+}
+
+/* ============================================================
+   6. BUTTONS
+   ============================================================ */
+.btn{transition:all .25s ease}
+.btn-primary{
+  --bs-btn-bg:var(--p);--bs-btn-border-color:var(--p);
+  --bs-btn-hover-bg:#5a3fb8;--bs-btn-hover-border-color:#5a3fb8;
+  --bs-btn-active-bg:#5a3fb8;--bs-btn-active-border-color:#5a3fb8;
+  --bs-btn-color:#fff;--bs-btn-hover-color:#fff;--bs-btn-active-color:#fff;
+  border-radius:50rem;
+  box-shadow:0 4px 15px rgba(122,90,214,0.25);
+}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(122,90,214,0.35)}
+.btn-outline-primary{
+  --bs-btn-color:var(--p);
+  --bs-btn-border-color:var(--p);
+  --bs-btn-hover-bg:var(--p);--bs-btn-hover-border-color:var(--p);
+  --bs-btn-hover-color:#fff;
+  --bs-btn-active-bg:var(--p);--bs-btn-active-border-color:var(--p);
+  border-radius:50rem;
+}
+.btn-outline-danger{
+  border-radius:50rem;
+}
+.btn-light{
+  --bs-btn-bg:var(--tint);
+  --bs-btn-border-color:var(--card-border);
+  --bs-btn-hover-bg:var(--p-soft);
+  --bs-btn-hover-border-color:var(--card-border);
+  --bs-btn-color:var(--ink);
+  --bs-btn-hover-color:var(--ink);
+  border-radius:50rem;
+}
+.btn-close{filter:none;color:var(--ink);opacity:.6}
+.btn-close:hover{opacity:1}
+[data-bs-theme=dark] .btn-close{filter:invert(1) grayscale(100%) brightness(200%)}
+.btn-group{border-radius:50rem;overflow:hidden}
+.btn-group .btn{border-radius:0}
+.btn-group .btn:first-child{border-radius:50rem 0 0 50rem}
+.btn-group .btn:last-child{border-radius:0 50rem 50rem 0}
+
+/* ============================================================
+   7. FORM CONTROLS
+   ============================================================ */
+.form-control,.form-select{
+  background:var(--card);
+  border:1px solid var(--card-border);
+  color:var(--ink);
+  border-radius:14px;
+  transition:all .25s ease;
+}
+.form-control:focus,.form-select:focus{
+  background:var(--card);
+  border-color:var(--p);
+  color:var(--ink);
+  box-shadow:0 0 0 3px rgba(122,90,214,0.15);
+}
+.form-control::placeholder{color:var(--muted)}
+.form-floating>.form-control~label,
+.form-floating>.form-select~label{color:var(--muted)}
+.form-select option{background:var(--card);color:var(--ink)}
+.input-group-text{
+  background:var(--tint);
+  border:1px solid var(--card-border);
+  color:var(--muted);
+}
+.search-glass{
+  background:var(--card);
+  border:1px solid var(--card-border);
+  border-radius:50rem!important;overflow:hidden;
+  box-shadow:var(--shadow-sm);
+}
+.search-glass .input-group-text{background:transparent;border:0;color:var(--muted)}
+.search-glass .form-control{background:transparent;border:0;color:var(--ink)}
+.search-glass .form-control::placeholder{color:var(--muted)}
+
+/* ============================================================
+   8. TYPOGRAPHY & BADGES — readable on light background
+   ============================================================ */
+.text-primary{color:var(--p-ink)!important}
+.text-secondary{color:var(--muted)!important}
+.text-body{color:var(--ink)!important}
+.text-danger{color:var(--r-ink)!important}
+.text-success{color:var(--g-ink)!important}
+.text-warning{color:var(--y-ink)!important}
+.badge{font-weight:500;border-radius:50rem}
+.bg-primary-subtle{background:var(--p-soft)!important;color:var(--p-ink)!important}
+.text-primary-emphasis{color:var(--p-ink)!important}
+.bg-danger-subtle{background:rgba(222,95,155,0.12)!important;color:var(--r-ink)!important}
+.text-danger-emphasis{color:var(--r-ink)!important}
+.bg-warning-subtle{background:rgba(232,185,61,0.12)!important;color:var(--y-ink)!important}
+.text-warning-emphasis{color:var(--y-ink)!important}
+.bg-info-subtle{background:rgba(74,144,226,0.12)!important;color:var(--b-ink)!important}
+.text-info-emphasis{color:var(--b-ink)!important}
+.bg-success-subtle{background:rgba(63,168,118,0.12)!important;color:var(--g-ink)!important}
+.text-success-emphasis{color:var(--g-ink)!important}
+.bg-secondary-subtle{background:var(--tint)!important;color:var(--muted)!important}
+.text-secondary-emphasis{color:var(--muted)!important}
+h1,h2,h3,h4,h5,h6,.fs-1,.fs-2,.fs-3,.fs-4,.fs-5{color:var(--ink)}
+.fw-bold,.fw-semibold{color:var(--ink)}
+small{font-weight:500}
+.border-bottom{border-color:var(--line)!important}
+.border-top{border-color:var(--line)!important}
+
+/* ============================================================
+   9. COMPONENTS
+   ============================================================ */
+.av{width:34px;height:34px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;color:#fff;font-size:.7rem;font-weight:600;border:2px solid var(--card-border);vertical-align:middle}
+.av+.av{margin-left:-9px}
+.donut{border-radius:50%;display:grid;place-items:center;margin:auto}
+.donut>div{width:76%;height:76%;border-radius:50%;background:var(--card);display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1;text-align:center}
+.dot{width:22px;height:22px;border-radius:50%;background:var(--track);transition:all .2s}.dot.on{background:var(--p);box-shadow:0 0 8px rgba(122,90,214,0.4)}
+.col-k{background:var(--tint);border-radius:20px;min-height:260px;border:1px solid var(--card-border)}
+.tk{cursor:grab;transition:all .25s ease}.tk:hover{transform:translateY(-3px);box-shadow:var(--shadow-hover)}
+.bar{border-radius:50rem;padding:.2rem .8rem;margin:4px 0;cursor:pointer;white-space:nowrap;overflow:hidden;font-size:.8rem;color:var(--ink)}
+.today{position:absolute;top:0;bottom:0;border-left:2px dashed var(--p);pointer-events:none}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.cell{min-height:70px;border-radius:14px;padding:.4rem;cursor:pointer;border:2px solid transparent;transition:all .2s;color:var(--ink)}
+.cell:hover{background:var(--tint)}
+.cell.sel{border-color:var(--p);background:rgba(122,90,214,0.06)}
+.tdy{background:var(--p);color:#fff;border-radius:50%;padding:0 .4rem}
+.pd{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:2px}
+
+/* ============================================================
+   10. PROGRESS BARS
+   ============================================================ */
+.progress{background:var(--track);border-radius:50rem;overflow:hidden}
+.progress-bar{border-radius:50rem}
+
+/* ============================================================
+   11. MODALS & OFFCANVAS
+   ============================================================ */
+.modal-content{
+  background:var(--card)!important;
+  border:1px solid var(--card-border);
+  color:var(--ink);
+  border-radius:20px!important;
+}
+.offcanvas{
+  background:var(--card)!important;
+  border-color:var(--card-border)!important;
+  color:var(--ink);
+}
+
+/* ============================================================
+   12. DROPDOWNS & TOASTS
+   ============================================================ */
+.dropdown-menu{
+  background:var(--card);
+  border:1px solid var(--card-border);
+  border-radius:16px;
+  color:var(--ink);
+  box-shadow:var(--shadow);
+}
+.dropdown-item,.dropdown-item-text{color:var(--ink)}
+.dropdown-item:hover,.dropdown-item:focus{background:var(--tint);color:var(--ink)}
+.toast{
+  --bs-toast-bg:var(--p)!important;
+  background:var(--p)!important;
+  border:1px solid var(--card-border);
+  border-radius:16px!important;
+  color:#fff;
+}
+.toast .btn-close{filter:invert(1) grayscale(100%) brightness(200%)}
+
+/* ============================================================
+   13. ALERTS
+   ============================================================ */
+.alert{border-radius:20px}
+.alert-success{background:rgba(63,168,118,0.1)!important;border-color:rgba(63,168,118,0.2)!important;color:var(--g-ink)!important}
+.alert-danger{background:rgba(222,95,155,0.1)!important;border-color:rgba(222,95,155,0.2)!important;color:var(--r-ink)!important}
+
+/* ============================================================
+   14. CUSTOM SCROLLBAR
+   ============================================================ */
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--track);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:var(--muted)}
+
+/* ============================================================
+   15. DASHBOARD — stat card + quote card
+   ============================================================ */
+.stat-card{position:relative;overflow:hidden}
+.stat-card .stat-icon{
+  width:48px;height:48px;border-radius:16px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.3rem;
+}
+.quote-card{position:relative;overflow:hidden}
+.quote-card .quote-icon{font-size:3rem;opacity:.08;position:absolute;top:8px;left:14px;color:var(--p)}
+
+/* ============================================================
+   16. FOCUS RING (ACCESSIBILITY)
+   ============================================================ */
+.focus-ring:focus,
+[tabindex="0"]:focus-visible,
+.tk:focus-visible,
+.cell:focus-visible{
+  outline:2px solid var(--p);
+  outline-offset:2px;
+}
+
+/* ============================================================
+   17. TOOLTIPS
+   ============================================================ */
+.tooltip{--bs-tooltip-bg:var(--card);--bs-tooltip-color:var(--ink)}
+[data-bs-theme=dark] .tooltip{--bs-tooltip-bg:#2a2550;--bs-tooltip-color:#eeeaf8}
+
+/* ============================================================
+   18. POMODORO TIMER BADGE (top bar)
+   ============================================================ */
+.pomo-badge{
+  display:inline-flex;align-items:center;gap:.35rem;
+  background:rgba(122,90,214,0.12);color:var(--p-ink);
+  border-radius:50rem;padding:.3rem .7rem;
+  font-size:.78rem;font-weight:600;
+  animation:pomo-pulse 2s ease-in-out infinite;
+}
+@keyframes pomo-pulse{
+  0%,100%{opacity:1}50%{opacity:.7}
+}
+
+/* ============================================================
+   19. MEMBER MODAL — color chips
+   ============================================================ */
+.color-chip{
+  width:32px;height:32px;border-radius:50%;cursor:pointer;
+  border:3px solid transparent;transition:all .2s;
+}
+.color-chip.selected,.color-chip:hover{
+  border-color:var(--ink);
+  transform:scale(1.15);
+}
+
+/* ============================================================
+   20. RESPONSIVE
+   ============================================================ */
+@media(max-width:991px){
+  .app-frame{margin:.5rem;border-radius:20px;min-height:calc(100vh - 1rem)}
+  .offcanvas-start{
+    background:var(--card)!important;
+  }
+}
+@media(max-width:575px){
+  .app-frame{margin:.25rem;border-radius:16px}
+  .card{border-radius:18px}
+}

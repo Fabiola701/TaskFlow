@@ -1,0 +1,10 @@
+/* timeline.js — Timeline page renderer */
+const R={};
+R.tl=function(){
+  const n=new Date(),w=new Date(n.getFullYear(),n.getMonth(),n.getDate()-(n.getDay()+6)%7+wk*7),ds=[...Array(7)].map((_,i)=>{const d=new Date(w);d.setDate(w.getDate()+i);return F(d)}),ti=ds.indexOf(TD);
+  return H('Timeline',`${fm(ds[0])} – ${fm(ds[6])}, ${ds[6].slice(0,4)}`,PG("wk--;go('tl')","wk=0;go('tl')",'This week',"wk++;go('tl')"))+`<div class="small mb-3">${[['Open','--p'],['In progress','--y'],['Done','--g'],['Overdue','--r']].map(([a,c])=>`<span class="me-3"><i class="bi bi-circle-fill" style="font-size:.6rem;color:var(${c})"></i> ${a}</span>`).join('')}</div>
+<div class="card overflow-x-auto"><div style="min-width:760px"><div class="d-flex"><div style="width:150px;flex:none" class="p-3 fw-bold">Members</div>${ds.map(d=>`<div class="flex-fill text-center p-3 ${d==TD?'fw-bold':''}" style="${d==TD?'color:var(--p-ink)':''}">${wd(d,{weekday:'short',day:'numeric'})}</div>`).join('')}</div>
+${S.m.map(m=>{const bs=S.t.filter(t=>t.as.includes(m[0])&&t.a<=ds[6]&&t.b>=ds[0]).map(t=>{const s=Math.max(0,dd(ds[0],t.a)),e=Math.min(6,dd(ds[0],t.b)),c=col(t);return`<div class="bar" style="margin-left:${s/7*100}%;width:${(e-s+1)/7*100}%;background:color-mix(in srgb,${c} 18%,transparent);border:1px solid ${c}" data-bs-toggle="tooltip" data-bs-title="#${t.id} ${esc(t.t)} · ${fm(t.a)} – ${fm(t.b)} · ${L[t.s]} · ${t.p}" onclick="det(${t.id})">#${t.id} ${esc(t.t)}</div>`}).join('');
+ return`<div class="d-flex" style="border-top:1px solid var(--line)"><div style="width:150px;flex:none" class="p-3 d-flex align-items-center gap-2">${av([m[0]])}<small class="fw-semibold text-truncate">${esc(m[1]).split(' ')[0]}</small></div><div class="flex-grow-1 position-relative py-2" style="background-size:calc(100%/7) 100%;background-image:linear-gradient(90deg,transparent calc(100% - 1px),var(--line) 0)">${bs||'<small class="text-secondary px-2">No tasks this week</small>'}${ti>=0?`<i class="today" style="left:${(ti+.5)/7*100}%"></i>`:''}</div></div>`}).join('')}</div></div><p class="small text-secondary mt-2">Tip: hover a bar for details, click it to open the task.</p>`;
+};
+initApp();
