@@ -6,6 +6,9 @@
 /* Inject shared HTML shell into the page */
 function renderShell(){
   const body=document.body;
+  const activeUser=JSON.parse(localStorage.getItem('tf_session')||'{}');
+  const activeMember=S.m.find(m=>m[0]==='FM');
+  const userInitials=(activeUser.name||activeMember?.[1]||'Fabiola').split(/\s+/).map(w=>w[0]).join('').slice(0,2).toUpperCase();
   /* Clear the orbs div if it exists */
   const orbs=body.querySelector('.orbs');
   if(orbs) orbs.remove();
@@ -17,9 +20,9 @@ function renderShell(){
 <div class="app-frame d-lg-flex gap-3 p-lg-3">
  <!-- SIDEBAR -->
  <div class="sw"><div class="offcanvas-lg offcanvas-start" id="side" tabindex="-1"><div class="offcanvas-body"><div class="card p-3 w-100 sidebar-inner">
-  <div class="d-flex align-items-center gap-2 mb-3"><span class="av rounded-4" style="background:var(--p);width:42px;height:42px;font-size:1.2rem"><i class="bi bi-water"></i></span><b class="fs-5" style="color:var(--ink)">TaskFlow</b><button class="btn-close ms-auto d-lg-none" data-bs-dismiss="offcanvas" data-bs-target="#side" aria-label="Close menu"></button></div>
+  <div class="d-flex align-items-center gap-2 mb-3"><a href="index.html" class="d-flex align-items-center gap-2 text-decoration-none"><span class="av rounded-4" style="background:var(--p);width:42px;height:42px;font-size:1.2rem"><i class="bi bi-water"></i></span><b class="fs-5" style="color:var(--ink)">TaskFlow</b></a><button class="btn-close ms-auto d-lg-none" data-bs-dismiss="offcanvas" data-bs-target="#side" aria-label="Close menu"></button></div>
   <nav class="vstack gap-1" id="nav"></nav>
-  <div class="sidebar-motto rounded-4 p-3 mt-auto small">Plan it. Track it. <b>Finish it.</b></div>
+  <div class="sidebar-motto rounded-4 p-3 mt-auto small">Plan it. Track it. <b>Finish it.</b></div><nav class="vstack gap-1 mt-2"><a class="nav-link ${PAGE==='settings'?'active':''}" href="settings.html"${PAGE==='settings'?' aria-current="page"':''}><i class="bi bi-gear"></i>Settings</a><a class="nav-link ${PAGE==='help'?'active':''}" href="help.html"${PAGE==='help'?' aria-current="page"':''}><i class="bi bi-question-circle"></i>Help</a></nav>
  </div></div></div></div>
  <main class="flex-grow-1 p-3 p-lg-0" style="min-width:0">
   <!-- TOP BAR -->
@@ -30,15 +33,9 @@ function renderShell(){
     <button id="dk" class="btn btn-light" aria-label="Toggle dark mode"><i class="bi bi-moon"></i></button>
     <span id="pom-badge" style="display:none"></span>
     <span id="stk" class="badge rounded-pill py-2 px-3" style="background:var(--tint);color:var(--ink);border:1px solid var(--card-border)" title="Current streak"></span>
-    <div class="dropdown d-none d-sm-block">
-     <button class="btn btn-light" data-bs-toggle="dropdown" aria-label="Settings"><i class="bi bi-gear"></i></button>
-     <ul class="dropdown-menu dropdown-menu-end">
-      <li><button class="dropdown-item" onclick="resetData()"><i class="bi bi-arrow-counterclockwise me-2"></i>Reset sample data</button></li>
-     </ul>
-    </div>
-    <div class="dropdown d-none d-sm-block"><button class="btn btn-light" data-bs-toggle="dropdown" aria-label="Notifications"><i class="bi bi-bell"></i></button><ul class="dropdown-menu dropdown-menu-end" id="nf"></ul></div>
+    <a class="btn btn-light" href="settings.html" aria-label="Settings"><i class="bi bi-gear"></i></a><a class="btn btn-light position-relative" href="notifications.html" aria-label="Notifications"><i class="bi bi-bell"></i><span id="notice-count" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"></span></a>
     <button class="btn btn-primary" onclick="openM()"><i class="bi bi-plus-lg"></i><span class="d-none d-sm-inline"> Add New Task</span></button>
-    <span class="av" style="background:#e0485f;width:40px;height:40px" title="Fabiola">FM</span>
+    <div class="dropdown"><button id="user-avatar" class="av border-0" style="background:${activeMember?.[3]||'#e0485f'};width:40px;height:40px" data-bs-toggle="dropdown" aria-label="Account menu">${userInitials}</button><ul class="dropdown-menu dropdown-menu-end"><li><a class="dropdown-item" href="profile.html">Profile</a></li><li><a class="dropdown-item" href="settings.html">Settings</a></li><li><a class="dropdown-item" href="help.html">Help</a></li><li><button class="dropdown-item" onclick="logout()">Log out</button></li></ul></div>
    </div>
   </div>
   <div id="main"></div>
@@ -53,7 +50,7 @@ function renderShell(){
   <div class="form-floating"><textarea id="f2" class="form-control" style="height:80px" placeholder="Description"></textarea><label for="f2">Description</label></div>
   <div class="row g-2"><div class="col"><label class="small" for="f3">Priority</label><select id="f3" class="form-select"><option>Low<option selected>Medium<option>High</select></div><div class="col"><label class="small" for="f4">Status</label><select id="f4" class="form-select"><option value="open">Open<option value="prog">In Progress<option value="done">Done</select></div></div>
   <div class="row g-2"><div class="col"><label class="small" for="f5">Start date</label><input type="date" id="f5" class="form-control"></div><div class="col"><label class="small" for="f6">Due date</label><input type="date" id="f6" class="form-control" required></div></div>
-  <div><div class="small mb-1">Assignees</div><div id="f7" class="d-flex flex-wrap gap-2"></div></div>
+  <div><div class="small mb-1">Assignees</div><div id="f7" class="d-flex flex-wrap gap-2"></div></div><div><label class="small" for="f8">Project</label><select id="f8" class="form-select"></select></div>
  </div>
  <div class="modal-footer border-0"><button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button><button class="btn btn-primary">Save task</button></div>
 </form></div></div>
@@ -90,8 +87,7 @@ function hdr(){
   const stkEl=$('#stk');
   if(stkEl) stkEl.innerHTML=`<i class="bi bi-fire" style="color:var(--y)"></i> ${streak()}`;
   const o=S.t.filter(isOv).length;
-  const nfEl=$('#nf');
-  if(nfEl) nfEl.innerHTML=`<li class="dropdown-item-text small">${o?o+' overdue task'+(o>1?'s':'')+' need attention':'You are all caught up'}</li>`;
+  const nc=$('#notice-count');if(nc){const c=notifications().filter(n=>!S.nr.includes(n.id)).length;nc.textContent=c||'';nc.style.display=c?'':'none'}
   updatePomBadge();
 }
 
@@ -153,7 +149,8 @@ const renderRing=()=>{
 function go(p){
   if(p!=PAGE){location.href=FILES[p];return}
   renderNav();
-  $('#main').innerHTML=R[PAGE]();
+  if(!R[PAGE])return;
+  try{$('#main').innerHTML=R[PAGE]()}catch(err){console.error(err);$('#main').innerHTML=`<div class="alert alert-danger">Page failed to render: ${esc(String(err.message||err))}</div>`}
   renderRing();clk();hdr();
   $$('[data-bs-toggle=tooltip]').forEach(e=>new bootstrap.Tooltip(e));
   bootstrap.Offcanvas.getInstance('#side')?.hide();
@@ -177,6 +174,7 @@ function openM(id,s,dt){
   $('#f4').value=t.s||s||'open';
   $('#f5').value=t.a||TD;
   $('#f6').value=t.b||dt||D(3);
+  $('#f8').innerHTML='<option value="">No project</option>'+S.pr.map(p=>`<option value="${p.id}" ${(t.pj||'')==p.id?'selected':''}>${esc(p.name)}</option>`).join('');
   $('#f7').innerHTML=S.m.map(m=>`<input type="checkbox" class="btn-check" id="m_${m[0]}" value="${m[0]}" ${(t.as||[]).includes(m[0])?'checked':''}><label class="btn btn-outline-primary btn-sm rounded-pill" for="m_${m[0]}">${esc(m[1]).split(' ')[0]}</label>`).join('');
   bootstrap.Modal.getOrCreateInstance('#mo').show();
 }
@@ -184,7 +182,7 @@ function sv(e){
   e.preventDefault();
   const id=+$('#mi').value;
   /* Store raw text — escape only happens at render time */
-  const o={t:$('#f1').value.trim(),ds:$('#f2').value.trim(),p:$('#f3').value,s:$('#f4').value,a:$('#f5').value||TD,b:$('#f6').value,as:$$('#f7 :checked').map(x=>x.value)};
+  const o={t:$('#f1').value.trim(),ds:$('#f2').value.trim(),p:$('#f3').value,s:$('#f4').value,a:$('#f5').value||TD,b:$('#f6').value,as:$$('#f7 :checked').map(x=>x.value),pj:$('#f8')?.value||''};
   if(!o.as.length)o.as=['FM'];
   let t=S.t.find(x=>x.id==id);
   if(t) Object.assign(t,o);
@@ -286,7 +284,7 @@ function tg(){
   updatePomBadge();
 }
 function fin(){
-  clearInterval(tm.iv);tm.run=0;beep();clearPom();
+  clearInterval(tm.iv);tm.run=0;if(S.set.sound)beep();clearPom();
   if(tm.m=='f'){
     const a=S.l[TD]||(S.l[TD]=[0,0]);
     a[0]++;a[1]+=S.p.f;S.d[TD]=1;
@@ -301,6 +299,7 @@ function fin(){
   if(PAGE=='pom') go('pom');
   else hdr();
   updatePomBadge();
+  if(S.set.autoStart)setTimeout(()=>{if(!tm.run)tg()},1000);
 }
 
 /* ============================================================
@@ -383,6 +382,7 @@ function removeMember(initials){
 let fp='',fa='',wk=0,cy=new Date().getFullYear(),cm=new Date().getMonth(),sel=TD;
 
 function initApp(){
+  if(!localStorage.getItem('tf_session')){location.replace('login.html');return}
   renderShell();
   initDarkMode();
   initSearch();
@@ -391,3 +391,5 @@ function initApp(){
   setInterval(clk,1000);
   go(PAGE);
 }
+
+function logout(){localStorage.removeItem('tf_session');location.href='login.html'}

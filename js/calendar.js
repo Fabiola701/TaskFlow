@@ -1,5 +1,4 @@
 /* calendar.js — Calendar page renderer */
-const R={};
 R.cal=function(){
   const f=new Date(cy,cm,1),st=new Date(cy,cm,1-(f.getDay()+6)%7),cells=[...Array(42)].map((_,i)=>{const d=new Date(st);d.setDate(st.getDate()+i);const k=F(d),ts=S.t.filter(x=>x.b==k),hc=ts.length?PC[['High','Medium','Low'].find(p=>ts.some(x=>x.p==p))]:'';
   return`<div class="cell ${k==sel?'sel':''} ${d.getMonth()!=cm?'opacity-50':''}" tabindex="0" role="gridcell" aria-label="${wd(k,{weekday:'long',month:'long',day:'numeric'})}" style="${hc?`background:color-mix(in srgb,${hc} 15%,transparent)`:''}" onclick="sel='${k}';go('cal')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();sel='${k}';go('cal')}"><span class="${k==TD?'tdy':''}">${d.getDate()}</span><div>${ts.map(x=>`<i class="pd" style="background:${PC[x.p]}"></i>`).join('')}</div></div>`}).join(''),ts=S.t.filter(x=>x.b==sel);

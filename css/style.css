@@ -346,3 +346,10 @@ small{font-weight:500}
   .app-frame{margin:.25rem;border-radius:16px}
   .card{border-radius:18px}
 }
+
+:focus-visible{outline:2px solid var(--p);outline-offset:2px}
+
+@media(max-width:575px){
+  .app-frame main>.d-flex{flex-wrap:wrap}
+  .search-glass{flex:1;min-width:0;max-width:none!important}
+}

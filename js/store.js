@@ -37,10 +37,17 @@ function seed(){
 let S=JSON.parse(localStorage.getItem('tf')||'null')||seed();
 /* Migrate old data: add safe defaults for new fields */
 S.t.forEach(t=>{
+  if(typeof t.t==='string')t.t=unesc(t.t);if(typeof t.ds==='string')t.ds=unesc(t.ds);
   if(!t.cm) t.cm=[];
-  if(!t.at) t.at=[];
+  if(!t.at) t.at=[];t.cm.forEach(c=>{if(typeof c.tx==='string')c.tx=unesc(c.tx)});
 });
+S.m.forEach(m=>{if(typeof m[1]==='string')m[1]=unesc(m[1]);if(typeof m[2]==='string')m[2]=unesc(m[2])});
 if(!S.d) S.d={};
+S.pr=S.pr||GOALS.map(([name,desc,done,total,icon,days],i)=>({id:'p'+(i+1),name,desc,total,icon,due:D(days),status:'active'}));
+S.nr=S.nr||[]; S.set={appearance:'light',sound:true,autoStart:false,notifications:true,notifyOverdue:true,notifyDue:true,notifyStreak:true,notifyComments:true,notifyFocus:true,...(S.set||{})}; S.fb=S.fb||[];
+S.t.forEach(t=>{if(!('pj' in t))t.pj=S.pr[0]?.id||''});
+if(!localStorage.getItem('tf')) localStorage.setItem('tf',JSON.stringify(S));
+const R={};
 
 const save=()=>localStorage.setItem('tf',JSON.stringify(S));
 
@@ -105,7 +112,7 @@ function initPomState(){
 
 function finOffscreen(ps){
   /* Log the session that completed while the user was on another page */
-  beep();
+  if(S.set.sound)beep();
   if(ps.mode=='f'){
     const a=S.l[TD]||(S.l[TD]=[0,0]);
     a[0]++;a[1]+=S.p.f;
@@ -132,8 +139,8 @@ function updatePomBadge(){
 }
 
 /* FILES mapping */
-const FILES={dash:'index.html',tasks:'tasks.html',tl:'timeline.html',cal:'calendar.html',pom:'pomodoro.html',ana:'analytics.html',mem:'members.html'};
-const NAV=[['dash','Dashboard','bi-grid'],['tasks','Tasks','bi-list-check'],['tl','Timeline','bi-bar-chart-steps'],['cal','Calendar','bi-calendar3'],['pom','Pomodoro','bi-stopwatch'],['ana','Analytics','bi-graph-up'],['mem','Members','bi-people']];
+const FILES={dash:'index.html',tasks:'tasks.html',projects:'projects.html',tl:'timeline.html',cal:'calendar.html',pom:'pomodoro.html',ana:'analytics.html',mem:'members.html',notifications:'notifications.html',profile:'profile.html',settings:'settings.html',help:'help.html'};
+const NAV=[['dash','Dashboard','bi-grid'],['tasks','Tasks','bi-list-check'],['projects','Projects','bi-kanban'],['tl','Timeline','bi-bar-chart-steps'],['cal','Calendar','bi-calendar3'],['pom','Pomodoro','bi-stopwatch'],['ana','Analytics','bi-graph-up'],['mem','Members','bi-people']];
 
 /* Card rendering */
 const card=t=>{
@@ -152,3 +159,5 @@ function resetData(){
   clearPom();
   location.reload();
 }
+
+function notifications(){const ns=[];if(S.set.notifications&&S.set.notifyOverdue)S.t.filter(isOv).forEach(t=>ns.push({id:'ov'+t.id,type:'overdue',icon:'bi-exclamation-circle',title:`Task overdue: ${t.t}`,text:`Due ${fm(t.b)}`}));(S.set.notifications&&S.set.notifyDue?S.t:[]).filter(t=>t.s!=='done'&&dd(TD,t.b)>=0&&dd(TD,t.b)<=2).forEach(t=>ns.push({id:'due'+t.id,type:'due',icon:'bi-calendar-event',title:`Due soon: ${t.t}`,text:`Due ${fm(t.b)}`}));(S.set.notifications&&S.set.notifyStreak?[3,7,14,30]:[]).filter(n=>streak()>=n).forEach(n=>ns.push({id:'streak'+n,type:'milestone',icon:'bi-fire',title:`${n}-day streak milestone`,text:'Keep up the great work!'}));(S.set.notifications&&S.set.notifyComments?S.t:[]).forEach(t=>(t.cm||[]).forEach((c,i)=>ns.push({id:`cm${t.id}-${i}`,type:'comment',icon:'bi-chat',title:`New comment on ${t.t}`,text:c.tx})));(S.set.notifications&&S.set.notifyFocus?Object.entries(S.l||{}):[]).forEach(([d,v])=>{if(v[0])ns.push({id:'focus'+d,type:'focus',icon:'bi-stopwatch',title:'Focus session completed',text:`${v[0]} session(s) on ${d}`})});return ns}

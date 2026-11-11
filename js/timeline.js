@@ -1,5 +1,4 @@
 /* timeline.js — Timeline page renderer */
-const R={};
 R.tl=function(){
   const n=new Date(),w=new Date(n.getFullYear(),n.getMonth(),n.getDate()-(n.getDay()+6)%7+wk*7),ds=[...Array(7)].map((_,i)=>{const d=new Date(w);d.setDate(w.getDate()+i);return F(d)}),ti=ds.indexOf(TD);
   return H('Timeline',`${fm(ds[0])} – ${fm(ds[6])}, ${ds[6].slice(0,4)}`,PG("wk--;go('tl')","wk=0;go('tl')",'This week',"wk++;go('tl')"))+`<div class="small mb-3">${[['Open','--p'],['In progress','--y'],['Done','--g'],['Overdue','--r']].map(([a,c])=>`<span class="me-3"><i class="bi bi-circle-fill" style="font-size:.6rem;color:var(${c})"></i> ${a}</span>`).join('')}</div>

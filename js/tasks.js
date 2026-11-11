@@ -1,5 +1,4 @@
 /* tasks.js — Tasks board page renderer */
-const R={};
 R.tasks=function(){
   const q=$('#q')?$('#q').value.toLowerCase():'';
   const f=S.t.filter(t=>(!q||('#'+t.id+' '+t.t).toLowerCase().includes(q))&&(!fp||t.p==fp)&&(!fa||t.as.includes(fa)));
