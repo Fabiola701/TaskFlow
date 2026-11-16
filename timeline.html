@@ -1,1 +1,109 @@
-<!doctype html><html lang="en" data-bs-theme="light"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>TaskFlow - Timeline</title><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet"><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"><link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"><link rel="stylesheet" href="css/style.css"><link rel="icon" href="img/favicon.svg" type="image/svg+xml"></head><body><div id="main"></div><script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script><script>const PAGE="tl";</script><script src="js/store.js"></script><script src="js/layout.js"></script><script src="js/timeline.js"></script></body></html>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>TaskFlow - Timeline</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="css/style.css">
+  </head>
+  <body>
+    <div class="app-layout">
+      <aside class="sidebar card">
+        <a class="brand" href="index.html"><span class="brand-mark"><i class="bi bi-water"></i></span>TaskFlow</a>
+        <nav class="side-nav" aria-label="Main navigation">
+          <div class="nav-group">
+            <h2>
+              Work
+            </h2>
+            <a class="side-link" href="index.html"><i class="bi bi-grid" aria-hidden="true"></i>Dashboard</a><a class="side-link" href="tasks.html"><i class="bi bi-list-check" aria-hidden="true"></i>Tasks</a><a class="side-link" href="projects.html"><i class="bi bi-kanban" aria-hidden="true"></i>Projects</a><a class="side-link active" href="timeline.html" aria-current="page"><i class="bi bi-bar-chart-steps" aria-hidden="true"></i>Timeline</a><a class="side-link" href="calendar.html"><i class="bi bi-calendar3" aria-hidden="true"></i>Calendar</a>
+          </div>
+          <div class="nav-group">
+            <h2>
+              Focus
+            </h2>
+            <a class="side-link" href="pomodoro.html"><i class="bi bi-stopwatch" aria-hidden="true"></i>Pomodoro</a><a class="side-link" href="habits.html"><i class="bi bi-check2-circle" aria-hidden="true"></i>Habits</a><a class="side-link" href="notes.html"><i class="bi bi-journal-text" aria-hidden="true"></i>Notes</a>
+          </div>
+          <div class="nav-group">
+            <h2>
+              Insights
+            </h2>
+            <a class="side-link" href="analytics.html"><i class="bi bi-graph-up" aria-hidden="true"></i>Analytics</a><a class="side-link" href="reports.html"><i class="bi bi-file-earmark-bar-graph" aria-hidden="true"></i>Reports</a><a class="side-link" href="archive.html"><i class="bi bi-archive" aria-hidden="true"></i>Archive</a><a class="side-link" href="notifications.html"><i class="bi bi-bell" aria-hidden="true"></i>Notifications</a>
+          </div>
+          <div class="nav-group">
+            <h2>
+              Team
+            </h2>
+            <a class="side-link" href="members.html"><i class="bi bi-people" aria-hidden="true"></i>Members</a><a class="side-link" href="about.html"><i class="bi bi-info-circle" aria-hidden="true"></i>About</a><a class="side-link" href="profile.html"><i class="bi bi-person" aria-hidden="true"></i>Profile</a>
+          </div>
+          <a class="side-link" href="settings.html"><i class="bi bi-gear" aria-hidden="true"></i>Settings</a><a class="side-link" href="help.html"><i class="bi bi-question-circle" aria-hidden="true"></i>Help</a>
+        </nav>
+        <div class="sidebar-motto">
+          Plan it. Track it. <b>Finish it.</b>
+        </div>
+      </aside>
+      <main class="app-main">
+        <header class="topbar card">
+          <a class="mobile-brand" href="index.html"><i class="bi bi-water"></i> TaskFlow</a>
+          <form class="search-box" action="tasks.html">
+            <i class="bi bi-search"></i><input name="q" aria-label="Search tasks" placeholder="Search tasks…">
+          </form>
+          <div class="top-actions">
+            <a class="btn btn-light" href="notifications.html" aria-label="Notifications"><i class="bi bi-bell"></i></a><a class="btn btn-light" href="settings.html" aria-label="Settings"><i class="bi bi-gear"></i></a><a class="avatar" href="profile.html" aria-label="Profile">FM</a>
+          </div>
+        </header>
+        <section class="page-content">
+          <div class="page-heading">
+            <div>
+              <h1>
+                Timeline
+              </h1>
+              <p>
+                Select a task to edit its details, or drag it to reschedule.
+              </p>
+            </div>
+          </div>
+          <div class="card p-4 overflow-auto">
+            <div class="timeline-head">
+              Team · Mon 9 · Tue 10 · Wed 11 · Thu 12 · Fri 13 · Sat 14 · Sun 15
+            </div>
+            <div class="timeline-row">
+              <b>Alex</b>
+              <div class="timeline-track">
+                <span class="timeline-bar purple" style="left:4%;width:40%">Research sources</span>
+              </div>
+            </div>
+            <div class="timeline-row">
+              <b>Priya</b>
+              <div class="timeline-track">
+                <span class="timeline-bar pink" style="left:25%;width:48%">Design tokens</span>
+              </div>
+            </div>
+            <div class="timeline-row">
+              <b>Sam</b>
+              <div class="timeline-track">
+                <span class="timeline-bar blue" style="left:18%;width:43%">Prototype login flow</span>
+              </div>
+            </div>
+            <div class="timeline-row">
+              <b>Mia</b>
+              <div class="timeline-track">
+                <span class="timeline-bar green" style="left:8%;width:35%">User interviews</span>
+              </div>
+            </div>
+            <div class="timeline-row">
+              <b>Leo</b>
+              <div class="timeline-track">
+                <span class="timeline-bar gold" style="left:38%;width:44%">Report draft</span>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script><script src="js/site.js"></script>
+  </body>
+</html>

@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="en" data-bs-theme="light">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>TaskFlow - Habits</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="css/style.css">
+  </head>
+  <body>
+    <div class="app-layout">
+      <aside class="sidebar card">
+        <a class="brand" href="index.html"><span class="brand-mark"><i class="bi bi-water"></i></span>TaskFlow</a>
+        <nav class="side-nav" aria-label="Main navigation">
+          <div class="nav-group">
+            <h2>
+              Work
+            </h2>
+            <a class="side-link" href="index.html"><i class="bi bi-grid" aria-hidden="true"></i>Dashboard</a><a class="side-link" href="tasks.html"><i class="bi bi-list-check" aria-hidden="true"></i>Tasks</a><a class="side-link" href="projects.html"><i class="bi bi-kanban" aria-hidden="true"></i>Projects</a><a class="side-link" href="timeline.html"><i class="bi bi-bar-chart-steps" aria-hidden="true"></i>Timeline</a><a class="side-link" href="calendar.html"><i class="bi bi-calendar3" aria-hidden="true"></i>Calendar</a>
+          </div>
+          <div class="nav-group">
+            <h2>
+              Focus
+            </h2>
+            <a class="side-link" href="pomodoro.html"><i class="bi bi-stopwatch" aria-hidden="true"></i>Pomodoro</a><a class="side-link active" href="habits.html" aria-current="page"><i class="bi bi-check2-circle" aria-hidden="true"></i>Habits</a><a class="side-link" href="notes.html"><i class="bi bi-journal-text" aria-hidden="true"></i>Notes</a>
+          </div>
+          <div class="nav-group">
+            <h2>
+              Insights
+            </h2>
+            <a class="side-link" href="analytics.html"><i class="bi bi-graph-up" aria-hidden="true"></i>Analytics</a><a class="side-link" href="reports.html"><i class="bi bi-file-earmark-bar-graph" aria-hidden="true"></i>Reports</a><a class="side-link" href="archive.html"><i class="bi bi-archive" aria-hidden="true"></i>Archive</a><a class="side-link" href="notifications.html"><i class="bi bi-bell" aria-hidden="true"></i>Notifications</a>
+          </div>
+          <div class="nav-group">
+            <h2>
+              Team
+            </h2>
+            <a class="side-link" href="members.html"><i class="bi bi-people" aria-hidden="true"></i>Members</a><a class="side-link" href="about.html"><i class="bi bi-info-circle" aria-hidden="true"></i>About</a><a class="side-link" href="profile.html"><i class="bi bi-person" aria-hidden="true"></i>Profile</a>
+          </div>
+          <a class="side-link" href="settings.html"><i class="bi bi-gear" aria-hidden="true"></i>Settings</a><a class="side-link" href="help.html"><i class="bi bi-question-circle" aria-hidden="true"></i>Help</a>
+        </nav>
+        <div class="sidebar-motto">
+          Plan it. Track it. <b>Finish it.</b>
+        </div>
+      </aside>
+      <main class="app-main">
+        <header class="topbar card">
+          <a class="mobile-brand" href="index.html"><i class="bi bi-water"></i> TaskFlow</a>
+          <form class="search-box" action="tasks.html">
+            <i class="bi bi-search"></i><input name="q" aria-label="Search tasks" placeholder="Search tasks…">
+          </form>
+          <div class="top-actions">
+            <a class="btn btn-light" href="notifications.html" aria-label="Notifications"><i class="bi bi-bell"></i></a><a class="btn btn-light" href="settings.html" aria-label="Settings"><i class="bi bi-gear"></i></a><a class="avatar" href="profile.html" aria-label="Profile">FM</a>
+          </div>
+        </header>
+        <section class="page-content">
+          <div class="page-heading">
+            <div>
+              <h1>
+                Habits
+              </h1>
+              <p>
+                Track your weekly habits. Check-ins are saved in this browser.
+              </p>
+            </div>
+          </div>
+          <div class="row g-3 mb-3">
+            <div class="col-md-4">
+              <div class="card stat-card">
+                <strong>2 of 4</strong><small>Habits done today</small>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card stat-card">
+                <strong>9 days</strong><small>Best streak</small>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card stat-card">
+                <strong>64%</strong><small>Weekly completion</small>
+              </div>
+            </div>
+          </div>
+          <div class="card p-3">
+            <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
+              <div>
+                <h2 class="h5 mb-1">
+                  This week
+                </h2>
+                <p class="small text-secondary mb-0">
+                  November 9–15 · Wednesday highlighted
+                </p>
+              </div>
+              <details class="new-habit">
+                <summary class="btn btn-primary">
+                  New habit
+                </summary>
+                <form class="card p-3 mt-2">
+                  <label>
+                    Habit name<input class="form-control" required placeholder="e.g. Journal for 10 minutes">
+                  </label>
+                  <label class="mt-2">
+                    Choose an icon<select class="form-select"><option>Book</option><option>Water</option><option>Movement</option></select>
+                  </label>
+                  <div class="mt-2">
+                    Color <span class="color-dot lilac"></span><span class="color-dot pink"></span><span class="color-dot blue"></span>
+                  </div>
+                  <button type="button" class="btn btn-outline-primary mt-3">Save habit</button>
+                </form>
+              </details>
+            </div>
+            <div class="table-responsive">
+              <table class="table habit-table align-middle">
+                <thead>
+                  <tr>
+                    <th scope="col">
+                      Habit
+                    </th>
+                    <th scope="col">
+                      Mon 9
+                    </th>
+                    <th scope="col">
+                      Tue 10
+                    </th>
+                    <th scope="col" class="today-column">
+                      Wed 11
+                    </th>
+                    <th scope="col">
+                      Thu 12
+                    </th>
+                    <th scope="col">
+                      Fri 13
+                    </th>
+                    <th scope="col">
+                      Sat 14
+                    </th>
+                    <th scope="col">
+                      Sun 15
+                    </th>
+                    <th scope="col">
+                      Progress
+                    </th>
+                    <th scope="col">
+                      Actions
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">
+                      <span class="habit-icon" style="--habit-color:#7a5ad6"><i class="bi bi-book" aria-hidden="true"></i></span><span>Read 20 min</span><small class="d-block text-secondary">5-day current streak</small>
+                    </th>
+                    <td class="habit-check">
+                      <input type="checkbox" aria-label="Read 20 min · Monday" checked>
+                    </td>
+                    <td class="habit-check">
+                      <input type="checkbox" aria-label="Read 20 min · Tuesday" checked>
+                    </td>
+                    <td class="habit-check">
+                      <input type="checkbox" aria-label="Read 20 min · Wednesday" >
+                    </td>
+                    <td class="habit-check">
+                      <input type="checkbox" aria-label="Read 20 min · Thursday" checked>
+                    </td>
+                    <td class="habit-check">
+                      <input type="checkbox" aria-label="Read 20 min · Friday" checked>
+                    </td>
+                    <td class="habit-check">
+                      <input type="checkbox" aria-label="Read 20 min · Saturday" >
+                    </td>
+                    <td class="habit-check">
+                      <input type="checkbox" aria-label="Read 20 min · Sunday" >
+                    </td>
+                    <td class="habit-progress">
+                      <div class="progress">
+                        <div class="progress-bar" style="width:57%">
+                        </div>
+                      </div>
+                      <small>4/7 this week</small>
+                    </td>
+                    <td>
+                      <a class="btn btn-sm btn-light" href="#edit-habit" aria-label="Edit Read 20 min"><i class="bi bi-pencil"></i></a> <a class="btn btn-sm btn-light" href="#delete-habit" aria-label="Delete Read 20 min"><i class="bi bi-trash"></i></a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">
+                      <span class="habit-icon" style="--habit-color:#4a90e2"><i class="bi bi-cup-straw" aria-hidden="true"></i></span><span>Drink water</span><small class="d-block text-secondary">9-day current streak</small>
+                    </th>
+                    <td class="habit-check">
+                      <input type="checkbox" aria-label="Drink water · Monday" checked>
+                    </td>
+                    <td class="habit-check">
+                      <input type="checkbox" aria-label="Drink water · Tuesday" checked>
+                    </td>
+                    <td class="habit-check">
+                      <input type="checkbox" aria-label="Drink water · Wednesday" checked>
+                    </td>
+                    <td class="habit-check">
+                      <input type="checkbox" aria-label="Drink water · Thursday" checked>
+                    </td>
+                    <td class="habit-check">
+                      <input type="checkbox" aria-label="Drink water · Friday" >
+                    </td>
+                    <td class="habit-check">
+                      <input type="checkbox" aria-label="Drink water · Saturday" >
+                    </td>
+                    <td class="habit-check">
+                      <input type="checkbox" aria-label="Drink water · Sunday" >
+                    </td>
+                    <td class="habit-progress">
+                      <div class="progress">
+                        <div class="progress-bar" style="width:57%">
+                        </div>
+                      </div>
+                      <small>4/7 this week</small>
+                    </td>
+                    <td>
+                      <a class="btn btn-sm btn-light" href="#edit-habit" aria-label="Edit Drink water"><i class="bi bi-pencil"></i></a> <a class="btn btn-sm btn-light" href="#delete-habit" aria-label="Delete Drink water"><i class="bi bi-trash"></i></a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">
+                      <span class="habit-icon" style="--habit-color:#db5a9b"><i class="bi bi-list-check" aria-hidden="true"></i></span><span>Review tasks</span><small class="d-block text-secondary">4-day current streak</small>
+                    </th>
+                    <td class="habit-check">
+                      <input type="checkbox" aria-label="Review tasks · Monday" checked>
+                    </td>
+                    <td class="habit-check">
+                      <input type="checkbox" aria-label="Review tasks · Tuesday" checked>
+                    </td>
+                    <td class="habit-check">
+                      <input type="checkbox" aria-label="Review tasks · Wednesday" checked>
+                    </td>
+                    <td class="habit-check">
+                      <input type="checkbox" aria-label="Review tasks · Thursday" >
+                    </td>
+                    <td class="habit-check">
+                      <input type="checkbox" aria-label="Review tasks · Friday" checked>
+                    </td>
+                    <td class="habit-check">
+                      <input type="checkbox" aria-label="Review tasks · Saturday" >
+                    </td>
+                    <td class="habit-check">
+                      <input type="checkbox" aria-label="Review tasks · Sunday" >
+                    </td>
+                    <td class="habit-progress">
+                      <div class="progress">
+                        <div class="progress-bar" style="width:57%">
+                        </div>
+                      </div>
+                      <small>4/7 this week</small>
+                    </td>
+                    <td>
+                      <a class="btn btn-sm btn-light" href="#edit-habit" aria-label="Edit Review tasks"><i class="bi bi-pencil"></i></a> <a class="btn btn-sm btn-light" href="#delete-habit" aria-label="Delete Review tasks"><i class="bi bi-trash"></i></a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">
+                      <span class="habit-icon" style="--habit-color:#3fa876"><i class="bi bi-universal-access" aria-hidden="true"></i></span><span>Stretch</span><small class="d-block text-secondary">3-day current streak</small>
+                    </th>
+                    <td class="habit-check">
+                      <input type="checkbox" aria-label="Stretch · Monday" >
+                    </td>
+                    <td class="habit-check">
+                      <input type="checkbox" aria-label="Stretch · Tuesday" checked>
+                    </td>
+                    <td class="habit-check">
+                      <input type="checkbox" aria-label="Stretch · Wednesday" checked>
+                    </td>
+                    <td class="habit-check">
+                      <input type="checkbox" aria-label="Stretch · Thursday" checked>
+                    </td>
+                    <td class="habit-check">
+                      <input type="checkbox" aria-label="Stretch · Friday" >
+                    </td>
+                    <td class="habit-check">
+                      <input type="checkbox" aria-label="Stretch · Saturday" >
+                    </td>
+                    <td class="habit-check">
+                      <input type="checkbox" aria-label="Stretch · Sunday" >
+                    </td>
+                    <td class="habit-progress">
+                      <div class="progress">
+                        <div class="progress-bar" style="width:43%">
+                        </div>
+                      </div>
+                      <small>3/7 this week</small>
+                    </td>
+                    <td>
+                      <a class="btn btn-sm btn-light" href="#edit-habit" aria-label="Edit Stretch"><i class="bi bi-pencil"></i></a> <a class="btn btn-sm btn-light" href="#delete-habit" aria-label="Delete Stretch"><i class="bi bi-trash"></i></a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <p class="small text-secondary mt-3">
+            Edit habit details and schedules, then record each day’s check-in.
+          </p>
+        </section>
+      </main>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script><script src="js/site.js"></script>
+  </body>
+</html>

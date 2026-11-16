@@ -1,1 +1,166 @@
-<!doctype html><html lang="en" data-bs-theme="light"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>TaskFlow - Dashboard</title><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet"><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"><link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"><link rel="stylesheet" href="css/style.css"><link rel="icon" href="img/favicon.svg" type="image/svg+xml"></head><body><div id="main"></div><script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script><script>const PAGE="dash";</script><script src="js/store.js"></script><script src="js/layout.js"></script><script src="js/dashboard.js"></script></body></html>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>TaskFlow - Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="css/style.css">
+  </head>
+  <body>
+    <div class="app-layout">
+      <aside class="sidebar card">
+        <a class="brand" href="index.html"><span class="brand-mark"><i class="bi bi-water"></i></span>TaskFlow</a>
+        <nav class="side-nav" aria-label="Main navigation">
+          <div class="nav-group">
+            <h2>
+              Work
+            </h2>
+            <a class="side-link active" href="index.html" aria-current="page"><i class="bi bi-grid" aria-hidden="true"></i>Dashboard</a><a class="side-link" href="tasks.html"><i class="bi bi-list-check" aria-hidden="true"></i>Tasks</a><a class="side-link" href="projects.html"><i class="bi bi-kanban" aria-hidden="true"></i>Projects</a><a class="side-link" href="timeline.html"><i class="bi bi-bar-chart-steps" aria-hidden="true"></i>Timeline</a><a class="side-link" href="calendar.html"><i class="bi bi-calendar3" aria-hidden="true"></i>Calendar</a>
+          </div>
+          <div class="nav-group">
+            <h2>
+              Focus
+            </h2>
+            <a class="side-link" href="pomodoro.html"><i class="bi bi-stopwatch" aria-hidden="true"></i>Pomodoro</a><a class="side-link" href="habits.html"><i class="bi bi-check2-circle" aria-hidden="true"></i>Habits</a><a class="side-link" href="notes.html"><i class="bi bi-journal-text" aria-hidden="true"></i>Notes</a>
+          </div>
+          <div class="nav-group">
+            <h2>
+              Insights
+            </h2>
+            <a class="side-link" href="analytics.html"><i class="bi bi-graph-up" aria-hidden="true"></i>Analytics</a><a class="side-link" href="reports.html"><i class="bi bi-file-earmark-bar-graph" aria-hidden="true"></i>Reports</a><a class="side-link" href="archive.html"><i class="bi bi-archive" aria-hidden="true"></i>Archive</a><a class="side-link" href="notifications.html"><i class="bi bi-bell" aria-hidden="true"></i>Notifications</a>
+          </div>
+          <div class="nav-group">
+            <h2>
+              Team
+            </h2>
+            <a class="side-link" href="members.html"><i class="bi bi-people" aria-hidden="true"></i>Members</a><a class="side-link" href="about.html"><i class="bi bi-info-circle" aria-hidden="true"></i>About</a><a class="side-link" href="profile.html"><i class="bi bi-person" aria-hidden="true"></i>Profile</a>
+          </div>
+          <a class="side-link" href="settings.html"><i class="bi bi-gear" aria-hidden="true"></i>Settings</a><a class="side-link" href="help.html"><i class="bi bi-question-circle" aria-hidden="true"></i>Help</a>
+        </nav>
+        <div class="sidebar-motto">
+          Plan it. Track it. <b>Finish it.</b>
+        </div>
+      </aside>
+      <main class="app-main">
+        <header class="topbar card">
+          <a class="mobile-brand" href="index.html"><i class="bi bi-water"></i> TaskFlow</a>
+          <form class="search-box" action="tasks.html">
+            <i class="bi bi-search"></i><input name="q" aria-label="Search tasks" placeholder="Search tasks…">
+          </form>
+          <div class="top-actions">
+            <a class="btn btn-light" href="notifications.html" aria-label="Notifications"><i class="bi bi-bell"></i></a><a class="btn btn-light" href="settings.html" aria-label="Settings"><i class="bi bi-gear"></i></a><a class="avatar" href="profile.html" aria-label="Profile">FM</a>
+          </div>
+        </header>
+        <section class="page-content">
+          <div class="page-heading">
+            <div>
+              <h1>
+                Dashboard
+              </h1>
+              <p>
+                Your work, at a glance.
+              </p>
+            </div>
+          </div>
+          <div class="row g-3 mb-4">
+            <div class="col-lg-8">
+              <div class="welcome-card card p-4 h-100">
+                <span class="eyebrow">WEDNESDAY · NOVEMBER 11</span>
+                <h2>
+                  Good morning, Fabiola
+                </h2>
+                <p>
+                  You have 8 tasks to finish. Have a fruitful day!
+                </p>
+                <a href="tasks.html" class="btn btn-primary align-self-start">View your tasks</a>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="card p-4">
+                <h2 class="h5">
+                  Project progress
+                </h2>
+                <div class="progress mt-3">
+                  <div class="progress-bar" style="width:43%">
+                  </div>
+                </div>
+                <p class="small text-secondary mt-2">
+                  43% complete · 6 of 14 tasks
+                </p>
+              </div>
+            </div>
+            <div class="col-6 col-xl-3">
+              <div class="card stat-card">
+                <span class="stat-icon purple"><i class="bi bi-list-check"></i></span><strong>14</strong><small>Total tasks</small>
+              </div>
+            </div>
+            <div class="col-6 col-xl-3">
+              <div class="card stat-card">
+                <span class="stat-icon green"><i class="bi bi-check-circle"></i></span><strong>6</strong><small>Completed</small>
+              </div>
+            </div>
+            <div class="col-6 col-xl-3">
+              <div class="card stat-card">
+                <span class="stat-icon pink"><i class="bi bi-exclamation-triangle"></i></span><strong>1</strong><small>Overdue</small>
+              </div>
+            </div>
+            <div class="col-6 col-xl-3">
+              <div class="card stat-card">
+                <span class="stat-icon gold"><i class="bi bi-calendar-event"></i></span><strong>5</strong><small>Due this week</small>
+              </div>
+            </div>
+            <div class="col-lg-7">
+              <div class="card p-4">
+                <h2 class="h5">
+                  Goals
+                </h2>
+                <p>
+                  Research Report <span class="float-end">43%</span>
+                </p>
+                <div class="progress mb-3">
+                  <div class="progress-bar" style="width:43%">
+                  </div>
+                </div>
+                <p>
+                  App Prototype <span class="float-end">30%</span>
+                </p>
+                <div class="progress mb-3">
+                  <div class="progress-bar" style="width:30%">
+                  </div>
+                </div>
+                <p>
+                  Final Presentation <span class="float-end">83%</span>
+                </p>
+                <div class="progress">
+                  <div class="progress-bar" style="width:83%">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-5">
+              <div class="card p-4">
+                <h2 class="h5">
+                  Upcoming deadlines
+                </h2>
+                <p>
+                  Design system tokens · Nov 12
+                </p>
+                <p>
+                  Load-Up research sources · Nov 13
+                </p>
+                <p class="mb-0">
+                  Build prototype login flow · Nov 13
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script><script src="js/site.js"></script>
+  </body>
+</html>

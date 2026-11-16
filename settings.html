@@ -1,1 +1,136 @@
-<!doctype html><html lang="en" data-bs-theme="light"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>TaskFlow - Settings</title><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet"><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"><link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"><link rel="stylesheet" href="css/style.css"><link rel="icon" href="img/favicon.svg" type="image/svg+xml"></head><body><div id="main"></div><script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script><script>const PAGE="settings";</script><script src="js/store.js"></script><script src="js/layout.js"></script><script src="js/settings.js"></script></body></html>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>TaskFlow - Settings</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="css/style.css">
+  </head>
+  <body>
+    <div class="app-layout">
+      <aside class="sidebar card">
+        <a class="brand" href="index.html"><span class="brand-mark"><i class="bi bi-water"></i></span>TaskFlow</a>
+        <nav class="side-nav" aria-label="Main navigation">
+          <div class="nav-group">
+            <h2>
+              Work
+            </h2>
+            <a class="side-link" href="index.html"><i class="bi bi-grid" aria-hidden="true"></i>Dashboard</a><a class="side-link" href="tasks.html"><i class="bi bi-list-check" aria-hidden="true"></i>Tasks</a><a class="side-link" href="projects.html"><i class="bi bi-kanban" aria-hidden="true"></i>Projects</a><a class="side-link" href="timeline.html"><i class="bi bi-bar-chart-steps" aria-hidden="true"></i>Timeline</a><a class="side-link" href="calendar.html"><i class="bi bi-calendar3" aria-hidden="true"></i>Calendar</a>
+          </div>
+          <div class="nav-group">
+            <h2>
+              Focus
+            </h2>
+            <a class="side-link" href="pomodoro.html"><i class="bi bi-stopwatch" aria-hidden="true"></i>Pomodoro</a><a class="side-link" href="habits.html"><i class="bi bi-check2-circle" aria-hidden="true"></i>Habits</a><a class="side-link" href="notes.html"><i class="bi bi-journal-text" aria-hidden="true"></i>Notes</a>
+          </div>
+          <div class="nav-group">
+            <h2>
+              Insights
+            </h2>
+            <a class="side-link" href="analytics.html"><i class="bi bi-graph-up" aria-hidden="true"></i>Analytics</a><a class="side-link" href="reports.html"><i class="bi bi-file-earmark-bar-graph" aria-hidden="true"></i>Reports</a><a class="side-link" href="archive.html"><i class="bi bi-archive" aria-hidden="true"></i>Archive</a><a class="side-link" href="notifications.html"><i class="bi bi-bell" aria-hidden="true"></i>Notifications</a>
+          </div>
+          <div class="nav-group">
+            <h2>
+              Team
+            </h2>
+            <a class="side-link" href="members.html"><i class="bi bi-people" aria-hidden="true"></i>Members</a><a class="side-link" href="about.html"><i class="bi bi-info-circle" aria-hidden="true"></i>About</a><a class="side-link" href="profile.html"><i class="bi bi-person" aria-hidden="true"></i>Profile</a>
+          </div>
+          <a class="side-link active" href="settings.html" aria-current="page"><i class="bi bi-gear" aria-hidden="true"></i>Settings</a><a class="side-link" href="help.html"><i class="bi bi-question-circle" aria-hidden="true"></i>Help</a>
+        </nav>
+        <div class="sidebar-motto">
+          Plan it. Track it. <b>Finish it.</b>
+        </div>
+      </aside>
+      <main class="app-main">
+        <header class="topbar card">
+          <a class="mobile-brand" href="index.html"><i class="bi bi-water"></i> TaskFlow</a>
+          <form class="search-box" action="tasks.html">
+            <i class="bi bi-search"></i><input name="q" aria-label="Search tasks" placeholder="Search tasks…">
+          </form>
+          <div class="top-actions">
+            <a class="btn btn-light" href="notifications.html" aria-label="Notifications"><i class="bi bi-bell"></i></a><a class="btn btn-light" href="settings.html" aria-label="Settings"><i class="bi bi-gear"></i></a><a class="avatar" href="profile.html" aria-label="Profile">FM</a>
+          </div>
+        </header>
+        <section class="page-content">
+          <div class="page-heading">
+            <div>
+              <h1>
+                Settings
+              </h1>
+              <p>
+                Choose your appearance and manage browser-saved demo data.
+              </p>
+            </div>
+          </div>
+          <div class="accordion static-accordion">
+            <details class="accordion-item" open>
+              <summary class="accordion-button">
+                Appearance
+              </summary>
+              <div class="accordion-body">
+                <label class="me-3">
+                  <input type="radio" name="theme" checked> Light
+                </label>
+                <label class="me-3">
+                  <input type="radio" name="theme"> Dark
+                </label>
+                <label>
+                  <input type="radio" name="theme"> Auto
+                </label>
+              </div>
+            </details>
+            <details class="accordion-item">
+              <summary class="accordion-button">
+                Pomodoro
+              </summary>
+              <div class="accordion-body row g-3">
+                <label class="col-sm-4">
+                  Focus minutes<input class="form-control" type="number" value="25">
+                </label>
+                <label class="col-sm-4">
+                  Short break<input class="form-control" type="number" value="5">
+                </label>
+                <label class="col-sm-4">
+                  Long break<input class="form-control" type="number" value="15">
+                </label>
+                <label class="form-check form-switch ms-2">
+                  <input class="form-check-input" type="checkbox" checked> Sound
+                </label>
+                <label class="form-check form-switch ms-2">
+                  <input class="form-check-input" type="checkbox"> Auto-start breaks
+                </label>
+              </div>
+            </details>
+            <details class="accordion-item">
+              <summary class="accordion-button">
+                Notifications
+              </summary>
+              <div class="accordion-body">
+                Overdue tasks · Deadlines · Streaks · Comments · Focus sessions
+              </div>
+            </details>
+            <details class="accordion-item">
+              <summary class="accordion-button">
+                Data
+              </summary>
+              <div class="accordion-body">
+                <button class="btn btn-outline-primary" type="button">Export data</button>
+                <label class="btn btn-outline-primary mb-0">
+                  Choose import file<input type="file" hidden>
+                </label>
+                <p class="small text-secondary mt-2">
+                  Data stays in this browser unless you export it.
+                </p>
+              </div>
+            </details>
+          </div>
+        </section>
+      </main>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script><script src="js/site.js"></script>
+  </body>
+</html>

@@ -1,1 +1,235 @@
-<!doctype html><html lang="en" data-bs-theme="light"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>TaskFlow - Help</title><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet"><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"><link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"><link rel="stylesheet" href="css/style.css"><link rel="icon" href="img/favicon.svg" type="image/svg+xml"></head><body><div id="main"></div><script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script><script>const PAGE="help";</script><script src="js/store.js"></script><script src="js/layout.js"></script><script src="js/help.js"></script></body></html>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>TaskFlow - Help</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="css/style.css">
+  </head>
+  <body>
+    <div class="app-layout">
+      <aside class="sidebar card">
+        <a class="brand" href="index.html"><span class="brand-mark"><i class="bi bi-water"></i></span>TaskFlow</a>
+        <nav class="side-nav" aria-label="Main navigation">
+          <div class="nav-group">
+            <h2>
+              Work
+            </h2>
+            <a class="side-link" href="index.html"><i class="bi bi-grid" aria-hidden="true"></i>Dashboard</a><a class="side-link" href="tasks.html"><i class="bi bi-list-check" aria-hidden="true"></i>Tasks</a><a class="side-link" href="projects.html"><i class="bi bi-kanban" aria-hidden="true"></i>Projects</a><a class="side-link" href="timeline.html"><i class="bi bi-bar-chart-steps" aria-hidden="true"></i>Timeline</a><a class="side-link" href="calendar.html"><i class="bi bi-calendar3" aria-hidden="true"></i>Calendar</a>
+          </div>
+          <div class="nav-group">
+            <h2>
+              Focus
+            </h2>
+            <a class="side-link" href="pomodoro.html"><i class="bi bi-stopwatch" aria-hidden="true"></i>Pomodoro</a><a class="side-link" href="habits.html"><i class="bi bi-check2-circle" aria-hidden="true"></i>Habits</a><a class="side-link" href="notes.html"><i class="bi bi-journal-text" aria-hidden="true"></i>Notes</a>
+          </div>
+          <div class="nav-group">
+            <h2>
+              Insights
+            </h2>
+            <a class="side-link" href="analytics.html"><i class="bi bi-graph-up" aria-hidden="true"></i>Analytics</a><a class="side-link" href="reports.html"><i class="bi bi-file-earmark-bar-graph" aria-hidden="true"></i>Reports</a><a class="side-link" href="archive.html"><i class="bi bi-archive" aria-hidden="true"></i>Archive</a><a class="side-link" href="notifications.html"><i class="bi bi-bell" aria-hidden="true"></i>Notifications</a>
+          </div>
+          <div class="nav-group">
+            <h2>
+              Team
+            </h2>
+            <a class="side-link" href="members.html"><i class="bi bi-people" aria-hidden="true"></i>Members</a><a class="side-link" href="about.html"><i class="bi bi-info-circle" aria-hidden="true"></i>About</a><a class="side-link" href="profile.html"><i class="bi bi-person" aria-hidden="true"></i>Profile</a>
+          </div>
+          <a class="side-link" href="settings.html"><i class="bi bi-gear" aria-hidden="true"></i>Settings</a><a class="side-link active" href="help.html" aria-current="page"><i class="bi bi-question-circle" aria-hidden="true"></i>Help</a>
+        </nav>
+        <div class="sidebar-motto">
+          Plan it. Track it. <b>Finish it.</b>
+        </div>
+      </aside>
+      <main class="app-main">
+        <header class="topbar card">
+          <a class="mobile-brand" href="index.html"><i class="bi bi-water"></i> TaskFlow</a>
+          <form class="search-box" action="tasks.html">
+            <i class="bi bi-search"></i><input name="q" aria-label="Search tasks" placeholder="Search tasks…">
+          </form>
+          <div class="top-actions">
+            <a class="btn btn-light" href="notifications.html" aria-label="Notifications"><i class="bi bi-bell"></i></a><a class="btn btn-light" href="settings.html" aria-label="Settings"><i class="bi bi-gear"></i></a><a class="avatar" href="profile.html" aria-label="Profile">FM</a>
+          </div>
+        </header>
+        <section class="page-content">
+          <div class="page-heading">
+            <div>
+              <h1>
+                Help
+              </h1>
+              <p>
+                Quick guidance for the TaskFlow preview.
+              </p>
+            </div>
+          </div>
+          <div class="card p-4 mb-3">
+            <h2 class="h5">
+              Quick start
+            </h2>
+            <ol>
+              <li>
+                Review the sample projects.
+              </li>
+              <li>
+                Open the task board to browse statuses.
+              </li>
+              <li>
+                Use the timeline and calendar to view schedules.
+              </li>
+              <li>
+                Open Pomodoro to view the focus timer.
+              </li>
+            </ol>
+          </div>
+          <div class="accordion static-accordion mb-3">
+            <details class="accordion-item">
+              <summary class="accordion-button">
+                How do I add a task?
+              </summary>
+              <div class="accordion-body">
+                Task editing is not active in this static preview.
+              </div>
+            </details>
+            <details class="accordion-item">
+              <summary class="accordion-button">
+                Can I assign teammates?
+              </summary>
+              <div class="accordion-body">
+                The task board shows sample assignees.
+              </div>
+            </details>
+            <details class="accordion-item">
+              <summary class="accordion-button">
+                How do projects work?
+              </summary>
+              <div class="accordion-body">
+                Projects group related tasks and show sample progress.
+              </div>
+            </details>
+            <details class="accordion-item">
+              <summary class="accordion-button">
+                Where is my data stored?
+              </summary>
+              <div class="accordion-body">
+                This static version does not save changes.
+              </div>
+            </details>
+            <details class="accordion-item">
+              <summary class="accordion-button">
+                Can I change the theme?
+              </summary>
+              <div class="accordion-body">
+                Theme controls are displayed for demonstration.
+              </div>
+            </details>
+            <details class="accordion-item">
+              <summary class="accordion-button">
+                How does the streak work?
+              </summary>
+              <div class="accordion-body">
+                The dashboard displays sample streak values.
+              </div>
+            </details>
+            <details class="accordion-item">
+              <summary class="accordion-button">
+                Can I export data?
+              </summary>
+              <div class="accordion-body">
+                Export is not active without JavaScript.
+              </div>
+            </details>
+            <details class="accordion-item">
+              <summary class="accordion-button">
+                Can I use this on my phone?
+              </summary>
+              <div class="accordion-body">
+                Yes. The layout adapts to narrow screens.
+              </div>
+            </details>
+          </div>
+          <div class="card p-4 mb-3">
+            <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+              <div>
+                <h2 class="h5 mb-1">
+                  Bootstrap loading placeholders
+                </h2>
+                <p class="small text-secondary mb-0">
+                  Preview glow and wave skeletons, then switch back to the loaded card.
+                </p>
+              </div>
+              <div class="d-flex flex-wrap gap-2">
+                <button class="btn btn-outline-primary btn-sm" type="button" data-placeholder-mode="glow">Show glow</button><button class="btn btn-outline-primary btn-sm" type="button" data-placeholder-mode="wave">Show wave</button><button class="btn btn-light btn-sm" type="button" data-placeholder-mode="loaded">Show loaded card</button>
+              </div>
+            </div>
+            <div class="row g-3 mt-1 align-items-stretch">
+              <div class="col-md-6">
+                <div class="card h-100 placeholder-demo-skeleton" data-placeholder-preview hidden aria-hidden="true">
+                  <img src="img/board.svg" class="card-img-top placeholder-demo-image" alt="">
+                  <div class="card-body">
+                    <h3 class="h5 placeholder-glow">
+                      <span class="placeholder col-6"></span>
+                    </h3>
+                    <p class="card-text placeholder-glow">
+                      <span class="placeholder col-7"></span><span class="placeholder col-4"></span><span class="placeholder col-8"></span>
+                    </p>
+                    <span class="btn btn-primary disabled placeholder col-6" aria-hidden="true"></span>
+                    <p class="placeholder-wave mt-3 mb-0">
+                      <span class="placeholder col-12"></span>
+                    </p>
+                  </div>
+                </div>
+                <div class="card h-100" data-placeholder-loaded>
+                  <img src="img/board.svg" class="card-img-top placeholder-demo-image" alt="TaskFlow task board preview">
+                  <div class="card-body">
+                    <h3 class="card-title h5">
+                      Task board preview
+                    </h3>
+                    <p class="card-text">
+                      Your tasks appear here once the page has finished loading.
+                    </p>
+                    <a href="tasks.html" class="btn btn-primary">Open tasks</a>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 d-flex align-items-center">
+                <p class="small text-secondary mb-0" data-placeholder-status aria-live="polite">
+                  The loaded card is showing.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="card p-4">
+            <h2 class="h5">
+              Keyboard basics
+            </h2>
+            <p class="mb-1">
+              Tab: next control · Shift+Tab: previous control · Enter: follow link
+            </p>
+          </div>
+          <form class="card p-4 mt-3">
+            <h2 class="h5">
+              Feedback preview
+            </h2>
+            <div class="row g-3">
+              <label class="col-md-6">
+                Name<input class="form-control" required>
+              </label>
+              <label class="col-md-6">
+                Email<input class="form-control" type="email" required>
+              </label>
+              <label class="col-12">
+                Message<textarea class="form-control" rows="3" required></textarea>
+              </label>
+            </div>
+            <button class="btn btn-primary mt-3 align-self-start" type="button">Send preview only</button>
+          </form>
+        </section>
+      </main>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script><script src="js/site.js"></script>
+  </body>
+</html>

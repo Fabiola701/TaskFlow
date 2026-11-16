@@ -1,1 +1,246 @@
-<!doctype html><html lang="en" data-bs-theme="light"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>TaskFlow - Landing</title><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet"><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"><link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"><link rel="stylesheet" href="css/style.css"><link rel="icon" href="img/favicon.svg" type="image/svg+xml"></head><body><div id="main"></div><script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script><script>const PAGE="landing";</script><script src="js/public.js"></script></body></html>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>TaskFlow - Welcome</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="css/style.css">
+  </head>
+  <body class="public-navbar-page">
+    <nav class="navbar bg-body-tertiary fixed-top public-nav public-navbar">
+      <div class="container-fluid">
+        <a class="navbar-brand brand" href="landing.html"><span class="brand-mark"><i class="bi bi-water"></i></span>TaskFlow</a><button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+          <div class="offcanvas-header">
+            <h2 class="offcanvas-title h5" id="offcanvasNavbarLabel">
+              Explore TaskFlow
+            </h2>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+              <li class="nav-item">
+                <a class="nav-link" href="landing.html">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="landing.html#features">Features</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="index.html">Dashboard</a>
+              </li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Workspace</a>
+                <ul class="dropdown-menu">
+                  <li>
+                    <a class="dropdown-item" href="tasks.html">Tasks</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="projects.html">Projects</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="calendar.html">Calendar</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="timeline.html">Timeline</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="pomodoro.html">Pomodoro</a>
+                  </li>
+                </ul>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="login.html">Log in</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="register.html">Create account</a>
+              </li>
+            </ul>
+            <form class="d-flex mt-3 navbar-search" role="search" action="tasks.html">
+              <input class="form-control me-2" name="q" type="search" placeholder="Search tasks" aria-label="Search tasks"><button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
+            <div class="d-grid gap-2 mt-3">
+              <a class="btn btn-primary" href="register.html">Get started</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <main>
+      <section class="container py-5">
+        <div class="row align-items-center g-4">
+          <div class="col-lg-6">
+            <span class="badge bg-primary-subtle mb-3">A calmer way to get things done</span>
+            <h1 class="display-4 fw-bold">
+              Make room for your best work.
+            </h1>
+            <p class="lead text-secondary">
+              Plan projects, track tasks, and build focus one session at a time.
+            </p>
+            <a class="btn btn-primary btn-lg" href="register.html">Get started</a> <a class="btn btn-outline-primary btn-lg" href="login.html">Log in</a>
+          </div>
+          <div class="col-lg-6">
+            <img class="img-fluid rounded-4 shadow" src="img/board.svg" alt="Task board preview">
+          </div>
+        </div>
+      </section>
+      <section class="container py-4">
+        <h2 class="text-center mb-4">
+          A view for every part of your day
+        </h2>
+        <div id="carouselExampleDark" class="carousel carousel-dark slide taskflow-carousel" data-bs-ride="carousel">
+          <div class="carousel-indicators">
+            <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button><button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1" aria-label="Slide 2"></button><button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="2" aria-label="Slide 3"></button>
+          </div>
+          <div class="carousel-inner">
+            <div class="carousel-item active" data-bs-interval="10000">
+              <img src="img/board.svg" class="d-block w-100" alt="TaskFlow board preview showing tasks grouped by status">
+              <div class="carousel-caption d-none d-md-block">
+                <h3 class="h5">
+                  Keep tasks moving
+                </h3>
+                <p>
+                  See what is open, in progress, and done.
+                </p>
+              </div>
+            </div>
+            <div class="carousel-item" data-bs-interval="7000">
+              <img src="img/timeline.svg" class="d-block w-100" alt="TaskFlow timeline preview showing the team's weekly schedule">
+              <div class="carousel-caption d-none d-md-block">
+                <h3 class="h5">
+                  Plan the week
+                </h3>
+                <p>
+                  See your team's schedule at a glance.
+                </p>
+              </div>
+            </div>
+            <div class="carousel-item" data-bs-interval="7000">
+              <img src="img/pomodoro.svg" class="d-block w-100" alt="TaskFlow Pomodoro focus timer preview">
+              <div class="carousel-caption d-none d-md-block">
+                <h3 class="h5">
+                  Make space for focus
+                </h3>
+                <p>
+                  Build focused work sessions into your day.
+                </p>
+              </div>
+            </div>
+          </div>
+          <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev"><span class="carousel-control-prev-icon" aria-hidden="true"></span><span class="visually-hidden">Previous</span></button><button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next"><span class="carousel-control-next-icon" aria-hidden="true"></span><span class="visually-hidden">Next</span></button>
+        </div>
+      </section>
+      <section class="container py-5">
+        <h2 class="text-center mb-4">
+          How it works
+        </h2>
+        <div class="row g-3 text-center">
+          <div class="col-md-4">
+            <div class="card p-4">
+              <b class="display-6 text-primary">01</b>
+              <h3 class="h5">
+                Plan your project
+              </h3>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card p-4">
+              <b class="display-6 text-primary">02</b>
+              <h3 class="h5">
+                Focus on one task
+              </h3>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card p-4">
+              <b class="display-6 text-primary">03</b>
+              <h3 class="h5">
+                Celebrate progress
+              </h3>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="container py-4" id="features">
+        <h2 class="text-center mb-4">
+          Features
+        </h2>
+        <div class="row g-3">
+          <div class="col-sm-6 col-lg-4">
+            <div class="card p-4 h-100">
+              <i class="bi bi-kanban card-icon"></i>
+              <h3 class="h5 mt-3">
+                Task board
+              </h3>
+              <p class="text-secondary">
+                Track work by status.
+              </p>
+            </div>
+          </div>
+          <div class="col-sm-6 col-lg-4">
+            <div class="card p-4 h-100">
+              <i class="bi bi-folder2 card-icon"></i>
+              <h3 class="h5 mt-3">
+                Projects
+              </h3>
+              <p class="text-secondary">
+                Group work into goals.
+              </p>
+            </div>
+          </div>
+          <div class="col-sm-6 col-lg-4">
+            <div class="card p-4 h-100">
+              <i class="bi bi-calendar3 card-icon"></i>
+              <h3 class="h5 mt-3">
+                Calendar
+              </h3>
+              <p class="text-secondary">
+                See deadlines.
+              </p>
+            </div>
+          </div>
+          <div class="col-sm-6 col-lg-4">
+            <div class="card p-4 h-100">
+              <i class="bi bi-bar-chart-steps card-icon"></i>
+              <h3 class="h5 mt-3">
+                Timeline
+              </h3>
+              <p class="text-secondary">
+                Review schedules.
+              </p>
+            </div>
+          </div>
+          <div class="col-sm-6 col-lg-4">
+            <div class="card p-4 h-100">
+              <i class="bi bi-stopwatch card-icon"></i>
+              <h3 class="h5 mt-3">
+                Pomodoro
+              </h3>
+              <p class="text-secondary">
+                Make room for focus.
+              </p>
+            </div>
+          </div>
+          <div class="col-sm-6 col-lg-4">
+            <div class="card p-4 h-100">
+              <i class="bi bi-graph-up card-icon"></i>
+              <h3 class="h5 mt-3">
+                Analytics
+              </h3>
+              <p class="text-secondary">
+                Review sample progress.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer class="public-footer">
+      © TaskFlow · Plan it. Track it. Finish it.
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script><script src="js/site.js"></script>
+  </body>
+</html>
