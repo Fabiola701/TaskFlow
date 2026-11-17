@@ -246,6 +246,67 @@
     $('form.card')?.addEventListener('submit',e=>{e.preventDefault();if(!e.currentTarget.reportValidity())return;const feedback=read('tf_feedback',[]);feedback.push(Object.fromEntries(new FormData(e.currentTarget)));write('tf_feedback',feedback);tell('Thanks! Your feedback was saved in this browser.');e.currentTarget.reset();});
     const skeleton=$('[data-placeholder-preview]');const loaded=$('[data-placeholder-loaded]');const status=$('[data-placeholder-status]');$$('[data-placeholder-mode]').forEach(button=>button.addEventListener('click',()=>{const mode=button.dataset.placeholderMode;const showSkeleton=mode==='glow'||mode==='wave';skeleton.hidden=!showSkeleton;loaded.hidden=showSkeleton;skeleton.querySelectorAll('.placeholder-glow,.placeholder-wave').forEach(node=>node.classList.remove('placeholder-glow','placeholder-wave'));if(showSkeleton)skeleton.querySelectorAll('.placeholder').forEach(span=>span.closest('h3,p')?.classList.add(`placeholder-${mode}`));if(status)status.textContent=mode==='loaded'?'The loaded card is showing.':`The ${mode} loading placeholder is showing.`;$$('[data-placeholder-mode]').forEach(control=>control.setAttribute('aria-pressed',String(control===button)));}));
   }
+  // Notes: open notes in a document editor and keep a searchable list beside it.
+  if(page==='notes.html'){
+    const list=$('#notes-list'),form=$('#note-editor-form'),modalElement=$('#noteEditorModal');
+    const titleField=$('#note-document-title'),bodyField=$('#note-document-body'),colorField=$('#note-document-color');
+    const saveStatus=$('#note-save-status'),pinButton=$('#note-pin-toggle'),deleteButton=$('#note-delete');
+    const colorIndicator=$('#note-color-indicator');
+    if(list&&form&&modalElement&&window.bootstrap){
+      const modal=bootstrap.Modal.getOrCreateInstance(modalElement);
+      const seed=[
+        {id:'note-1',title:'Final presentation',body:'Keep the opening concise. Include the user research, prototype walkthrough, and next steps.',color:'lilac',pinned:true,date:'Nov 11'},
+        {id:'note-2',title:'Ideas for the report',body:'Add a short section on survey limitations and sample size.',color:'pink',pinned:false,date:'Nov 11'},
+        {id:'note-3',title:'Team check-in',body:'Ask each person to share one win and one blocker.',color:'yellow',pinned:true,date:'Nov 11'},
+        {id:'note-4',title:'Focus reminder',body:'Take a short break after each long focus session.',color:'green',pinned:false,date:'Nov 11'}
+      ];
+      let notes=read('tf_notes',null);if(!Array.isArray(notes)){notes=seed;write('tf_notes',notes);}
+      const allowedColors=['lilac','pink','yellow','green','blue'];
+      notes=notes.map(note=>({...note,color:allowedColors.includes(note.color)?note.color:'lilac',title:String(note.title||''),body:String(note.body||''),pinned:!!note.pinned}));
+      let selectedId=notes[0]?.id||'';
+      const current=()=>notes.find(note=>note.id===selectedId)||null;
+      const save=()=>write('tf_notes',notes);
+      const today=()=>new Date().toLocaleDateString(undefined,{month:'short',day:'numeric'});
+      const updateStatus=message=>{if(saveStatus)saveStatus.textContent=message;};
+      const showSelected=()=>{
+        const note=current();const enabled=!!note;
+        titleField.disabled=!enabled;bodyField.disabled=!enabled;colorField.disabled=!enabled;pinButton.disabled=!enabled;deleteButton.disabled=!enabled;
+        $('#note-task-link').classList.toggle('disabled',!enabled);
+        titleField.value=note?.title||'';bodyField.value=note?.body||'';colorField.value=note?.color||'lilac';
+        if(colorIndicator){colorIndicator.dataset.color=note?.color||'lilac';colorIndicator.title=note?`${note.color} note`:'';}
+        $('#note-document-date').textContent=note?`Edited ${note.date||today()}`:'';
+        pinButton.setAttribute('aria-pressed',String(!!note?.pinned));pinButton.innerHTML=note?.pinned?'<i class="bi bi-pin-angle-fill" aria-hidden="true"></i> Pinned':'<i class="bi bi-pin" aria-hidden="true"></i> Pin';
+        updateStatus(note?'Saved in this browser':'Add a note to begin');
+      };
+      const renderList=()=>{
+        const query=($('#note-search')?.value||'').trim().toLowerCase();const color=$('#note-color')?.value.toLowerCase()||'all colors';
+        const shown=[...notes].sort((a,b)=>Number(b.pinned)-Number(a.pinned)).filter(note=>(color==='all colors'||note.color===color)&&`${note.title} ${note.body}`.toLowerCase().includes(query));
+        if(selectedId&&!shown.some(note=>note.id===selectedId)){selectedId=shown[0]?.id||'';showSelected();}
+        list.replaceChildren();
+        shown.forEach(note=>{
+          const button=document.createElement('button');button.type='button';button.className='note-list-item';button.setAttribute('role','option');button.setAttribute('aria-selected',String(note.id===selectedId));button.dataset.openNote=note.id;
+          const marker=document.createElement('span');marker.className='note-color-mark';marker.dataset.color=allowedColors.includes(note.color)?note.color:'lilac';marker.setAttribute('aria-label',`${marker.dataset.color} note`);
+          const name=document.createElement('span');name.className='note-list-title';name.textContent=note.title||'Untitled note';
+          const excerpt=document.createElement('span');excerpt.className='note-list-excerpt';excerpt.textContent=note.body||'No text yet';
+          const meta=document.createElement('span');meta.className='note-list-meta';meta.textContent=`${note.pinned?'📌 Pinned · ':''}${note.date||today()}`;
+          const titleRow=document.createElement('span');titleRow.className='note-list-title-row';titleRow.append(marker,name);
+          button.append(titleRow,excerpt,meta);list.append(button);
+        });
+        if(!shown.length){const empty=document.createElement('p');empty.className='small text-secondary p-2';empty.textContent='No notes found.';list.append(empty);}
+      };
+      const selectNote=id=>{selectedId=id;renderList();showSelected();};
+      const persistEditor=()=>{const note=current();if(!note)return;note.title=titleField.value;note.body=bodyField.value;note.color=colorField.value;note.date=today();save();renderList();updateStatus('Saved');$('#note-document-date').textContent=`Edited ${note.date}`;};
+      $('[data-add-note]')?.addEventListener('click',()=>{form.reset();form.elements.title.value='';form.elements.body.value='';form.querySelector('[name="color"][value="lilac"]').checked=true;form.elements.pinned.checked=false;$('#noteEditorTitle').textContent='Add note';modal.show();});
+      list.addEventListener('click',e=>{const item=e.target.closest('[data-open-note]');if(item)selectNote(item.dataset.openNote);});
+      $('#note-search')?.addEventListener('input',renderList);$('#note-color')?.addEventListener('change',renderList);
+      [titleField,bodyField].forEach(field=>field.addEventListener('input',persistEditor));colorField.addEventListener('change',persistEditor);
+      pinButton.addEventListener('click',()=>{const note=current();if(!note)return;note.pinned=!note.pinned;save();renderList();showSelected();});
+      deleteButton.addEventListener('click',()=>{const note=current();if(!note)return;notes=notes.filter(item=>item.id!==note.id);selectedId=notes[0]?.id||'';save();renderList();showSelected();tell('Note deleted.');});
+      form.addEventListener('submit',e=>{e.preventDefault();if(!form.reportValidity())return;const data=new FormData(form);const note={id:`note-${Date.now()}`,title:String(data.get('title')).trim(),body:String(data.get('body')).trim(),color:String(data.get('color')||'lilac'),pinned:data.has('pinned'),date:today()};notes.push(note);selectedId=note.id;save();renderList();showSelected();modal.hide();tell('Note added.');});
+      renderList();showSelected();
+    }
+  }
+
   if(page==='login.html'||page==='register.html'){
     const form=$('main form');
     const alertBox=document.createElement('div');alertBox.className='alert alert-danger';alertBox.hidden=true;alertBox.setAttribute('role','alert');form?.before(alertBox);
